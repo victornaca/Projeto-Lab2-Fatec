@@ -41,6 +41,10 @@
       <artifactId>quarkus-jdbc-mysql</artifactId>
     </dependency>
     <dependency>
+    	<groupId>mysql</groupId>
+    	<artifactId>mysql-connector-java</artifactId>
+	</dependency>
+    <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-rest-client-reactive-jackson</artifactId>
     </dependency>
