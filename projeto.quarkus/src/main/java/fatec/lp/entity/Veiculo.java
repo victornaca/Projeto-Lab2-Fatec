@@ -1,25 +1,21 @@
 package fatec.lp.entity;
 
-import jakarta.persistence.Column;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.Data;
 
-@Entity
 @Data
-@Table(name = "veiculo")
-public class Veiculo {
+@Entity
+public class Veiculo extends PanacheEntityBase{
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 	
-	@Column(name = "marca")
-	private String marca;
+	public String marca;
 	
-	@Column(name = "modelo")
-	private String modelo;
+	public String modelo;
 }
