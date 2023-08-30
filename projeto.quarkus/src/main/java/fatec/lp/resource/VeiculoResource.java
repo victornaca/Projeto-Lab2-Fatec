@@ -10,6 +10,7 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -32,6 +33,12 @@ public class VeiculoResource {
     @GET
     public List<Veiculo> listarVeiculos() {
         return veiculoService.listarVeiculos();
+    }
+    
+    @GET
+    @Path("{id}")
+    public Veiculo listarVeiculoId(@PathParam("id") Long id) {
+        return veiculoService.listarVeiculoId(id);
     }
 	
 }

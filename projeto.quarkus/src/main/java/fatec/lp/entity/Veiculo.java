@@ -18,4 +18,5 @@ public class Veiculo extends PanacheEntityBase{
 	public String marca;
 	
 	public String modelo;
+	
 }
