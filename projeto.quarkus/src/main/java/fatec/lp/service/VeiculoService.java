@@ -31,7 +31,7 @@ public class VeiculoService {
 	}
 	
 	@Transactional
-	public void deletarVeiculo(Long id, Veiculo veiculo1) {
+	public void deletarVeiculo(Long id, Veiculo veiculo) {
 		Veiculo.deleteById(id);
 	}
     
