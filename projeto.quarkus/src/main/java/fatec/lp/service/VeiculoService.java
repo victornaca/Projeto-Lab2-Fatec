@@ -29,5 +29,10 @@ public class VeiculoService {
 	    veiculo.setModelo(veiculoAtualizado.getModelo());
 	    return veiculo;
 	}
+	
+	@Transactional
+	public void deletarVeiculo(Long id, Veiculo veiculo1) {
+		Veiculo.deleteById(id);
+	}
     
 }

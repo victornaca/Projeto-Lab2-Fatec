@@ -5,8 +5,8 @@ import java.util.List;
 import fatec.lp.entity.Veiculo;
 import fatec.lp.service.VeiculoService;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
@@ -25,7 +25,6 @@ public class VeiculoResource {
     VeiculoService veiculoService;
 
     @POST
-    @Transactional
     public Response cadastrarVeiculo(Veiculo veiculo) {
         veiculoService.cadastrarVeiculo(veiculo);
         return Response.status(Response.Status.CREATED).build();
@@ -48,5 +47,12 @@ public class VeiculoResource {
     	veiculoService.atualizarVeiculo(id,veiculoAtualizado);
     	return Response.status(Response.Status.OK).build();
     }
+    
+    @DELETE
+    @Path("{id}")
+    public void deletarVeiculo(@PathParam("id") Long id, Veiculo veiculo) {
+    	veiculoService.deletarVeiculo(id, veiculo);
+    }
+    
 	
 }
