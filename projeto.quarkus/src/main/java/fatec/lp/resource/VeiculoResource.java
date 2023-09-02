@@ -50,8 +50,9 @@ public class VeiculoResource {
     
     @DELETE
     @Path("{id}")
-    public void deletarVeiculo(@PathParam("id") Long id, Veiculo veiculo) {
+    public Response deletarVeiculo(@PathParam("id") Long id, Veiculo veiculo) {
     	veiculoService.deletarVeiculo(id, veiculo);
+    	return Response.noContent().build();
     }
     
 	
