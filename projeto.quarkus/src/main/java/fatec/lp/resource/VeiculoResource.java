@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
@@ -39,6 +40,13 @@ public class VeiculoResource {
     @Path("{id}")
     public Veiculo listarVeiculoId(@PathParam("id") Long id) {
         return veiculoService.listarVeiculoId(id);
+    }
+    
+    @PUT
+    @Path("{id}")
+    public Response atualizarVeiculo(@PathParam("id") Long id, Veiculo veiculoAtualizado) {
+    	veiculoService.atualizarVeiculo(id,veiculoAtualizado);
+    	return Response.status(Response.Status.OK).build();
     }
 	
 }
