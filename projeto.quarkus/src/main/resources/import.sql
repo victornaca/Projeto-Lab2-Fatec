@@ -1,5 +1,13 @@
-INSERT INTO Veiculo (marca, modelo) VALUES ('Marca1', 'Modelo1');
-INSERT INTO Veiculo (marca, modelo) VALUES ('Marca2', 'Modelo2');
+INSERT INTO Veiculo (marca, modelo, ano, estadoConservacao)
+VALUES ('Toyota', 'Corolla', 2022, 'Novo');
+INSERT INTO Veiculo (marca, modelo, ano, estadoConservacao)
+VALUES ('Ford', 'Mustang', 2021, 'Usado');
+INSERT INTO Veiculo (marca, modelo, ano, estadoConservacao)
+VALUES ('Honda', 'Civic', 2020, 'Usado');
+INSERT INTO Veiculo (marca, modelo, ano, estadoConservacao)
+VALUES ('Volkswagen', 'Golf', 2019, 'Usado');
+INSERT INTO Veiculo (marca, modelo, ano, estadoConservacao)
+VALUES ('Chevrolet', 'Cruze', 2022, 'Novo');
 
 
 INSERT INTO leilao (dataOcorrencia, dataVisita, local)

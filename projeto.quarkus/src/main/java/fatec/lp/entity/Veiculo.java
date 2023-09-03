@@ -15,8 +15,12 @@ public class Veiculo extends PanacheEntityBase{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
-	public String marca;
+	private String marca;
 	
-	public String modelo;
+	private String modelo;
+	
+	private Integer ano;
+	
+	private String estadoConservacao;
 	
 }
