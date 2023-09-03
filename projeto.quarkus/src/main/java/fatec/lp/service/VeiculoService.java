@@ -19,7 +19,8 @@ public class VeiculoService {
     }
     
 	public Veiculo listarVeiculoId(Long id) {
-        return Veiculo.findById(id);
+		Veiculo veiculo = Veiculo.findById(id);
+        return veiculo;
     }
 	
 	@Transactional
@@ -27,6 +28,8 @@ public class VeiculoService {
 		Veiculo veiculo = Veiculo.findById(id);
 		veiculo.setMarca(veiculoAtualizado.getMarca());
 	    veiculo.setModelo(veiculoAtualizado.getModelo());
+	    veiculo.setAno(veiculoAtualizado.getAno());
+	    veiculo.setEstadoConservacao(veiculoAtualizado.getEstadoConservacao());
 	    return veiculo;
 	}
 	
@@ -34,5 +37,4 @@ public class VeiculoService {
 	public void deletarVeiculo(Long id, Veiculo veiculo) {
 		Veiculo.deleteById(id);
 	}
-    
 }
