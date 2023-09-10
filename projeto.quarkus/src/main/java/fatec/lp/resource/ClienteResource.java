@@ -25,7 +25,7 @@ public class ClienteResource {
 	ClienteService clienteservice;
 	
 	@POST
-	public Response cadastrarLeilao(Cliente cliente) {
+	public Response cadastrarCliente(Cliente cliente) {
 		clienteservice.cadastrarcliente(cliente);
 		return Response.status(Response.Status.CREATED).build();
 	}
