@@ -3,6 +3,7 @@ package fatec.lp.service;
 import java.util.List;
 
 import fatec.lp.entity.Leilao;
+import fatec.lp.entity.LocalLeilao;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 
@@ -10,7 +11,12 @@ import jakarta.transaction.Transactional;
 public class LeilaoService {
 	
 	@Transactional
-	public void cadastrarLeilao (Leilao leilao) {
+	public void cadastrarLeilao (Long localLeilaoId, Leilao leilao) {
+		LocalLeilao localLeilao = LocalLeilao.findById(localLeilaoId);
+		if (localLeilao == null) {
+            throw new IllegalArgumentException("Local de leilão não encontrado.");
+        }
+		leilao.localLeilao = localLeilao;
 		leilao.persist();
 	}
 	
@@ -25,7 +31,7 @@ public class LeilaoService {
 	@Transactional
 	public Leilao atualizarLeilao(Long id, Leilao leilaoAtualizado) {
 		Leilao leilao = Leilao.findById(id);
-		leilao.setLocal(leilaoAtualizado.getLocal());
+		leilao.setLocalLeilao(leilaoAtualizado.getLocalLeilao());
 		leilao.setDataOcorrencia(leilaoAtualizado.getDataOcorrencia());
 		leilao.setDataVisita(leilaoAtualizado.getDataVisita());
 		return leilao;

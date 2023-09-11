@@ -7,23 +7,19 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
 @Data
 @Entity
-public class Leilao extends PanacheEntityBase{
+public class LocalLeilao extends PanacheEntityBase{
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
-	public Date dataOcorrencia;
+	public String endereco;
 	
-	public Date dataVisita;
+	public String cidade;
 	
-	@ManyToOne
-	@JoinColumn(name = "localLeilaoId")
-	public LocalLeilao localLeilao;
+	public String estado;
 }

@@ -25,8 +25,8 @@ public class LeilaoResource {
 	LeilaoService leilaoService;
 	
 	@POST
-	public Response cadastrarLeilao(Leilao leilao) {
-		leilaoService.cadastrarLeilao(leilao);
+	public Response cadastrarLeilao(Long localLeilaoId, Leilao leilao) {
+		leilaoService.cadastrarLeilao(localLeilaoId,leilao);
 		return Response.status(Response.Status.CREATED).build();
 	}
 	
