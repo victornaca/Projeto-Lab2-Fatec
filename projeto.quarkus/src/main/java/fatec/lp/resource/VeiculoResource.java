@@ -61,7 +61,7 @@ public class VeiculoResource {
     public Response vincularLeilao(@PathParam("id") Long veiculoId, VincularLeilaoRequest request) {
 		Veiculo veiculo = veiculoService.vincularLeilao(veiculoId, request);
 		if (veiculo == null) {
-            return Response.status(Response.Status.OK).entity(veiculo).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(veiculo).build();
         }
     	return Response.status(Response.Status.OK).entity(veiculo).build();
     	

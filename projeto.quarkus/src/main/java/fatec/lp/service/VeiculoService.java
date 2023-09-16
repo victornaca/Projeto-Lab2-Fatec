@@ -47,7 +47,7 @@ public class VeiculoService {
 			return null;
 		}
 		
-		if (veiculo.getStatus() == "VENDIDO") {
+		if (veiculo.getStatus().equals("VENDIDO")) {
 			return null;
 		}
 		
@@ -56,7 +56,7 @@ public class VeiculoService {
             return null;
         }
         
-		veiculo.setStatus("Vinculado");
+		veiculo.setStatus("VINCULADO");
 		veiculo.setLeilao(leilao);
 		
 		return veiculo;
