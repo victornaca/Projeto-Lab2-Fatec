@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
 @Data
@@ -23,4 +25,9 @@ public class Veiculo extends PanacheEntityBase{
 	
 	private String estadoConservacao;
 	
+	private String status = "NAO VINCULADO";
+	
+    @ManyToOne
+    @JoinColumn(name = "leilaoId")
+    private Leilao leilao;
 }

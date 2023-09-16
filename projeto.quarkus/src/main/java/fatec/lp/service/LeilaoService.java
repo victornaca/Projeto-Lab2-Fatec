@@ -25,9 +25,12 @@ public class LeilaoService {
 	@Transactional
 	public Leilao atualizarLeilao(Long id, Leilao leilaoAtualizado) {
 		Leilao leilao = Leilao.findById(id);
-		leilao.setLocal(leilaoAtualizado.getLocal());
 		leilao.setDataOcorrencia(leilaoAtualizado.getDataOcorrencia());
 		leilao.setDataVisita(leilaoAtualizado.getDataVisita());
+		leilao.setStatus(leilaoAtualizado.getStatus());
+		leilao.setEndereco(leilaoAtualizado.getEndereco());
+		leilao.setCidade(leilaoAtualizado.getCidade());
+		leilao.setEstado(leilaoAtualizado.getEstado());
 		return leilao;
 	}
 	

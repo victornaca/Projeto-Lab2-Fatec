@@ -3,6 +3,7 @@ package fatec.lp.entity;
 import java.sql.Date;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,9 +18,16 @@ public class Leilao extends PanacheEntityBase{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
-	public Date dataOcorrencia;
+	private Date dataOcorrencia;
 	
-	public Date dataVisita;
+	private Date dataVisita;
 	
-	public String local;
+	private String status;
+	
+	private String endereco;
+	
+	private String cidade;
+	
+	@Column(length = 2)
+	private String estado;
 }

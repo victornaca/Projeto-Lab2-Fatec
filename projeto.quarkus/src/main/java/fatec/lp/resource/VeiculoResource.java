@@ -3,6 +3,7 @@ package fatec.lp.resource;
 import java.util.List;
 
 import fatec.lp.entity.Veiculo;
+import fatec.lp.resource.Request.VincularLeilaoRequest;
 import fatec.lp.service.VeiculoService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
@@ -55,5 +56,14 @@ public class VeiculoResource {
     	return Response.noContent().build();
     }
     
-	
+    @PUT
+    @Path("vincular-veiculo/{id}")
+    public Response vincularLeilao(@PathParam("id") Long veiculoId, VincularLeilaoRequest request) {
+		Veiculo veiculo = veiculoService.vincularLeilao(veiculoId, request);
+		if (veiculo == null) {
+            return Response.status(Response.Status.OK).entity(veiculo).build();
+        }
+    	return Response.status(Response.Status.OK).entity(veiculo).build();
+    	
+    }
 }
