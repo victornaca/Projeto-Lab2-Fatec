@@ -32,12 +32,12 @@ INSERT INTO InstituicaoFinanceira (nome, cnpj) VALUES ('Banco E', '2468013579');
 INSERT INTO InstituicaoFinanceira (nome, cnpj) VALUES ('Banco F', '1357924680');
 
 
-INSERT INTO DispositivoInformática (tipo, modelo) VALUES ('Laptop', 'Modelo A');
-INSERT INTO DispositivoInformática (tipo, modelo) VALUES ('Desktop', 'Modelo B');
-INSERT INTO DispositivoInformática (tipo, modelo) VALUES ('Tablet', 'Modelo C');
-INSERT INTO DispositivoInformática (tipo, modelo) VALUES ('Smartphone', 'Modelo D');
-INSERT INTO DispositivoInformática (tipo, modelo) VALUES ('Servidor', 'Modelo E');
-INSERT INTO DispositivoInformática (tipo, modelo) VALUES ('Impressora', 'Modelo F');
+INSERT INTO DispositivoInformatica (tipo, modelo, estadoConservacao, status) VALUES ('Laptop', 'Modelo A', 'Bom', 'NAO VINCULADO');
+INSERT INTO DispositivoInformatica (tipo, modelo, estadoConservacao, status) VALUES ('Desktop', 'Modelo B', 'Excelente', 'VENDIDO');
+INSERT INTO DispositivoInformatica (tipo, modelo, estadoConservacao, status) VALUES ('Tablet', 'Modelo C', 'Regular', 'NAO VINCULADO');
+INSERT INTO DispositivoInformatica (tipo, modelo, estadoConservacao, status) VALUES ('Smartphone', 'Modelo D', 'Bom', 'NAO VINCULADO');
+INSERT INTO DispositivoInformatica (tipo, modelo, estadoConservacao, status) VALUES ('Servidor', 'Modelo E', 'Excelente', 'NAO VINCULADO');
+INSERT INTO DispositivoInformatica (tipo, modelo, estadoConservacao, status) VALUES ('Impressora', 'Modelo F', 'Regular', 'NAO VINCULADO');
 
 
 INSERT INTO Cliente (nome, email) VALUES ('João Silva', 'joao@email.com');

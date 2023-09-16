@@ -21,7 +21,4 @@ public class Cliente  extends PanacheEntityBase {
     private String nome;
     
     private String email;
-
-
-
 }
