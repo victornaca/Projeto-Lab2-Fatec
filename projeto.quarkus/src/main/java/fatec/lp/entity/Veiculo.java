@@ -25,7 +25,7 @@ public class Veiculo extends PanacheEntityBase{
 	
 	private String estadoConservacao;
 	
-	private String status = "Nao Vinculado";
+	private String status = "NAO VINCULADO";
 	
     @ManyToOne
     @JoinColumn(name = "leilaoId")

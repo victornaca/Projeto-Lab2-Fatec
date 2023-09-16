@@ -47,6 +47,10 @@ public class VeiculoService {
 			return null;
 		}
 		
+		if (veiculo.getStatus() == "VENDIDO") {
+			return null;
+		}
+		
 		Leilao leilao = Leilao.findById(request.getLeilaoId());
         if (leilao == null) {
             return null;

@@ -1,13 +1,13 @@
-INSERT INTO Veiculo (marca, modelo, ano, estadoConservacao)
-VALUES ('Toyota', 'Corolla', 2022, 'Novo');
-INSERT INTO Veiculo (marca, modelo, ano, estadoConservacao)
-VALUES ('Ford', 'Mustang', 2021, 'Usado');
-INSERT INTO Veiculo (marca, modelo, ano, estadoConservacao)
-VALUES ('Honda', 'Civic', 2020, 'Usado');
-INSERT INTO Veiculo (marca, modelo, ano, estadoConservacao)
-VALUES ('Volkswagen', 'Golf', 2019, 'Usado');
-INSERT INTO Veiculo (marca, modelo, ano, estadoConservacao)
-VALUES ('Chevrolet', 'Cruze', 2022, 'Novo');
+INSERT INTO Veiculo (marca, modelo, ano, estadoConservacao, status)
+VALUES ('Toyota', 'Corolla', 2022, 'Novo', 'VENDIDO');
+INSERT INTO Veiculo (marca, modelo, ano, estadoConservacao, status)
+VALUES ('Ford', 'Mustang', 2021, 'Usado', 'NAO VINCULADO');
+INSERT INTO Veiculo (marca, modelo, ano, estadoConservacao, status)
+VALUES ('Honda', 'Civic', 2020, 'Usado', 'NAO VINCULADO');
+INSERT INTO Veiculo (marca, modelo, ano, estadoConservacao, status)
+VALUES ('Volkswagen', 'Golf', 2019, 'Usado', 'VENDIDO');
+INSERT INTO Veiculo (marca, modelo, ano, estadoConservacao, status)
+VALUES ('Chevrolet', 'Cruze', 2022, 'Novo', 'VENDIDO');
 
 
 INSERT INTO Leilao (dataOcorrencia, dataVisita, status, endereco, cidade, estado)
