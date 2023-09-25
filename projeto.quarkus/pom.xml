@@ -29,37 +29,24 @@
   </dependencyManagement>
   <dependencies>
     <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-hibernate-orm</artifactId>
-    </dependency>
+    	<groupId>io.quarkus</groupId>
+    	<artifactId>quarkus-hibernate-orm-panache</artifactId>
+	</dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-rest-client-reactive</artifactId>
+      <artifactId>quarkus-resteasy</artifactId>
     </dependency>
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-jdbc-mysql</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-rest-client-reactive-jackson</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-rest-client-reactive-jsonb</artifactId>
-    </dependency>
+	<dependency>
+    	<groupId>io.quarkus</groupId>
+    	<artifactId>quarkus-jdbc-h2</artifactId>
+	</dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-arc</artifactId>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-resteasy-reactive</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-junit5</artifactId>
-      <scope>test</scope>
+      <artifactId>quarkus-resteasy-jackson</artifactId>
     </dependency>
     <dependency>
       <groupId>io.rest-assured</groupId>
@@ -72,7 +59,10 @@
     	<version>1.18.22</version> <!-- Use a versão mais recente do Lombok -->
     	<scope>provided</scope>
 	</dependency>
-
+	<dependency>
+    	<groupId>io.quarkus</groupId>
+    	<artifactId>quarkus-smallrye-openapi</artifactId>
+	</dependency>
   </dependencies>
   <build>
     <plugins>
