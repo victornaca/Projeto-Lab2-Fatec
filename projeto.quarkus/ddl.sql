@@ -37,3 +37,9 @@ CREATE TABLE instituicao_financeira (
     nome VARCHAR(255),
     cnpj VARCHAR(255)
 );
+
+CREATE TABLE lance (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    valor DECIMAL(10, 2) NOT NULL,
+    data_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
