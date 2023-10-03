@@ -2,6 +2,9 @@ package fatec.lp.resource;
 
 import java.util.List;
 
+import fatec.lp.entity.Caminhao;
+import fatec.lp.entity.Carro;
+import fatec.lp.entity.Motocicleta;
 import fatec.lp.entity.Veiculo;
 import fatec.lp.resource.Request.VincularLeilaoRequest;
 import fatec.lp.service.VeiculoService;
@@ -24,11 +27,32 @@ public class VeiculoResource {
 
     @Inject
     VeiculoService veiculoService;
+    
+    @POST
+    @Path("/cadastrar-carro")
+    public Response cadastrarCarro(Carro carro) {
+        veiculoService.cadastrarVeiculo(carro);
+        return Response.status(Response.Status.CREATED).build();
+    }
+    
+    @POST
+    @Path("/cadastrar-caminhao")
+    public Response cadastrarCaminhao(Caminhao caminhao) {
+        veiculoService.cadastrarVeiculo(caminhao);
+        return Response.status(Response.Status.CREATED).entity("Caminhão cadastrado com sucesso").build();
+    }
+
+    @POST
+    @Path("/cadastrar-moto")
+    public Response cadastrarMotocicleta(Motocicleta motocicleta) {
+        veiculoService.cadastrarVeiculo(motocicleta);
+        return Response.status(Response.Status.CREATED).entity("Motocicleta cadastrada com sucesso").build();
+    }
 
     @POST
     public Response cadastrarVeiculo(Veiculo veiculo) {
         veiculoService.cadastrarVeiculo(veiculo);
-        return Response.status(Response.Status.CREATED).build();
+        return Response.status(Response.Status.CREATED).entity("Veículo cadastrado com sucesso").build();
     }
 
     @GET
