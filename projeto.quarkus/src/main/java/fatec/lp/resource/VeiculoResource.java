@@ -2,6 +2,9 @@ package fatec.lp.resource;
 
 import java.util.List;
 
+import fatec.lp.DTO.CaminhaoDTO;
+import fatec.lp.DTO.CarroDTO;
+import fatec.lp.DTO.MotocicletaDTO;
 import fatec.lp.entity.Caminhao;
 import fatec.lp.entity.Carro;
 import fatec.lp.entity.Motocicleta;
@@ -20,7 +23,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/veiculos")
+@Path("/api/veiculos")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class VeiculoResource {
@@ -30,29 +33,23 @@ public class VeiculoResource {
     
     @POST
     @Path("/cadastrar-carro")
-    public Response cadastrarCarro(Carro carro) {
-        veiculoService.cadastrarVeiculo(carro);
+    public Response cadastrarCarro(CarroDTO carroDTO) {
+        veiculoService.cadastrarCarro(carroDTO);
         return Response.status(Response.Status.CREATED).build();
     }
     
     @POST
     @Path("/cadastrar-caminhao")
-    public Response cadastrarCaminhao(Caminhao caminhao) {
-        veiculoService.cadastrarVeiculo(caminhao);
+    public Response cadastrarCaminhao(CaminhaoDTO caminhaoDTO) {
+        veiculoService.cadastrarCaminhao(caminhaoDTO);
         return Response.status(Response.Status.CREATED).entity("Caminhão cadastrado com sucesso").build();
     }
 
     @POST
     @Path("/cadastrar-moto")
-    public Response cadastrarMotocicleta(Motocicleta motocicleta) {
-        veiculoService.cadastrarVeiculo(motocicleta);
+    public Response cadastrarMotocicleta(MotocicletaDTO motocicletaDTO) {
+        veiculoService.cadastrarMoto(motocicletaDTO);
         return Response.status(Response.Status.CREATED).entity("Motocicleta cadastrada com sucesso").build();
-    }
-
-    @POST
-    public Response cadastrarVeiculo(Veiculo veiculo) {
-        veiculoService.cadastrarVeiculo(veiculo);
-        return Response.status(Response.Status.CREATED).entity("Veículo cadastrado com sucesso").build();
     }
 
     @GET
@@ -67,10 +64,39 @@ public class VeiculoResource {
     }
     
     @PUT
-    @Path("{id}")
-    public Response atualizarVeiculo(@PathParam("id") Long id, Veiculo veiculoAtualizado) {
-    	veiculoService.atualizarVeiculo(id,veiculoAtualizado);
-    	return Response.status(Response.Status.OK).build();
+    @Path("/atualizar-carro/{id}")
+    public Response atualizarCarro(@PathParam("id") Long id, CarroDTO carroAtualizado) {
+    	Carro carroExistente = Carro.findById(id);
+
+        if (carroExistente == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Carro não encontrada").build();
+        }
+    	veiculoService.atualizarCarro(id,carroAtualizado);
+    	return Response.status(Response.Status.OK).entity("Carro atualizado com sucesso").build();
+    }
+    
+    @PUT
+    @Path("/atualizar-caminhao/{id}")
+    public Response atualizarCaminhao(@PathParam("id") Long id, CaminhaoDTO caminhaoAtualizado) {
+    	Caminhao caminhaoExistente = Caminhao.findById(id);
+
+        if (caminhaoExistente == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Carro não encontrada").build();
+        }
+    	veiculoService.atualizarCaminhao(id,caminhaoAtualizado);
+    	return Response.status(Response.Status.OK).entity("Carro atualizado com sucesso").build();
+    }
+    
+    @PUT
+    @Path("/atualizar-moto/{id}")
+    public Response atualizarMotocicleta(@PathParam("id") Long id, MotocicletaDTO motocicletaAtualizado) {
+    	Motocicleta motoExistente = Motocicleta.findById(id);
+
+        if (motoExistente == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Carro não encontrada").build();
+        }
+    	veiculoService.atualizarMotocicleta(id,motocicletaAtualizado);
+    	return Response.status(Response.Status.OK).entity("Carro atualizado com sucesso").build();
     }
     
     @DELETE

@@ -18,7 +18,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/leilao")
+@Path("/api/leilao")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class LeilaoResource {
@@ -29,15 +29,7 @@ public class LeilaoResource {
 	@POST
 	public Response cadastrarLeilao(LeilaoDTO leilaoDTO) {
 		try {
-			LeilaoDTO dto = new LeilaoDTO();
-	        dto.setDataOcorrencia(leilaoDTO.getDataOcorrencia());
-	        dto.setDataVisita(leilaoDTO.getDataVisita());
-	        dto.setStatus(leilaoDTO.getStatus());
-	        dto.setEndereco(leilaoDTO.getEndereco());
-	        dto.setCidade(leilaoDTO.getCidade());
-	        dto.setEstado(leilaoDTO.getEstado());
-	        dto.setLeilaoInstituicaoIds(leilaoDTO.getLeilaoInstituicaoIds());
-			Leilao leilao = leilaoService.cadastrarLeilao(dto);
+			Leilao leilao = leilaoService.cadastrarLeilao(leilaoDTO);
 			return Response.status(Response.Status.CREATED).entity(leilao).build();
 		} catch (IllegalArgumentException e) {
 			return Response.status(Response.Status.BAD_REQUEST).entity("Erro ao cadastrar o leilão: " + e.getMessage()).build();
