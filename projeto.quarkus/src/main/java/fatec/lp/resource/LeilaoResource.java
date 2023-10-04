@@ -3,6 +3,7 @@ package fatec.lp.resource;
 import java.util.List;
 
 import fatec.lp.DTO.LeilaoDTO;
+import fatec.lp.entity.InstituicaoFinanceira;
 import fatec.lp.entity.Leilao;
 import fatec.lp.service.LeilaoService;
 import jakarta.inject.Inject;
@@ -28,7 +29,15 @@ public class LeilaoResource {
 	@POST
 	public Response cadastrarLeilao(LeilaoDTO leilaoDTO) {
 		try {
-			Leilao leilao = leilaoService.cadastrarLeilao(leilaoDTO);
+			LeilaoDTO dto = new LeilaoDTO();
+	        dto.setDataOcorrencia(leilaoDTO.getDataOcorrencia());
+	        dto.setDataVisita(leilaoDTO.getDataVisita());
+	        dto.setStatus(leilaoDTO.getStatus());
+	        dto.setEndereco(leilaoDTO.getEndereco());
+	        dto.setCidade(leilaoDTO.getCidade());
+	        dto.setEstado(leilaoDTO.getEstado());
+	        dto.setLeilaoInstituicaoIds(leilaoDTO.getLeilaoInstituicaoIds());
+			Leilao leilao = leilaoService.cadastrarLeilao(dto);
 			return Response.status(Response.Status.CREATED).entity(leilao).build();
 		} catch (IllegalArgumentException e) {
 			return Response.status(Response.Status.BAD_REQUEST).entity("Erro ao cadastrar o leilão: " + e.getMessage()).build();

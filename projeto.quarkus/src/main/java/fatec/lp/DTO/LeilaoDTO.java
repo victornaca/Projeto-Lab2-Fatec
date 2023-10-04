@@ -14,6 +14,6 @@ public class LeilaoDTO {
 	private String endereco;
 	private String cidade;
 	private String estado;
-	private List<Long> instituicaoIds;
+	private List<Long> leilaoInstituicaoIds;
 
 }
