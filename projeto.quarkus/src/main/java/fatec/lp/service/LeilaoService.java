@@ -1,10 +1,12 @@
 package fatec.lp.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fatec.lp.DTO.LeilaoDTO;
 import fatec.lp.entity.InstituicaoFinanceira;
 import fatec.lp.entity.Leilao;
+import fatec.lp.entity.LeilaoInstituicaoFinanceira;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 
@@ -13,24 +15,38 @@ public class LeilaoService {
 
 	@Transactional
 	public Leilao cadastrarLeilao(LeilaoDTO leilaoDTO) {
-		if (leilaoDTO.getInstituicaoIds() == null || leilaoDTO.getInstituicaoIds().isEmpty()) {
+		if (leilaoDTO.getLeilaoInstituicaoIds() == null || leilaoDTO.getLeilaoInstituicaoIds().isEmpty()) {
 			throw new IllegalArgumentException("Pelo menos uma instituição financeira deve ser informada.");
 		}
-
+		
 		Leilao leilao = new Leilao();
-		leilao.setDataOcorrencia(leilaoDTO.getDataOcorrencia());
-		leilao.setDataVisita(leilaoDTO.getDataVisita());
 		leilao.setStatus(leilaoDTO.getStatus());
-		leilao.setEndereco(leilaoDTO.getEndereco());
-		leilao.setCidade(leilaoDTO.getCidade());
-		leilao.setEstado(leilaoDTO.getEstado());
+	    leilao.setEndereco(leilaoDTO.getEndereco());
+	    leilao.setCidade(leilaoDTO.getCidade());
+	    leilao.setEstado(leilaoDTO.getEstado());
+	    leilao.setDataOcorrencia(leilaoDTO.getDataOcorrencia());
+	    leilao.setDataVisita(leilaoDTO.getDataVisita());
 
-		List<InstituicaoFinanceira> instituicoes = InstituicaoFinanceira.list("id in (?1)",
-				leilaoDTO.getInstituicaoIds());
-		leilao.setInstituicoes(instituicoes);
+	    List<InstituicaoFinanceira> instituicoes = new ArrayList<>();
+	    for (Long instituicaoId : leilaoDTO.getLeilaoInstituicaoIds()) {
+	        InstituicaoFinanceira instituicao = InstituicaoFinanceira.findById(instituicaoId);
+	        if (instituicao != null) {
+	            instituicoes.add(instituicao);
+	        } else {
+	            throw new IllegalArgumentException("Instituição financeira com ID " + instituicaoId + " não encontrada.");
+	        }
+	    }
 
-		leilao.persist();
-		return leilao;
+	    leilao.setLeilaoInstituicoes(new ArrayList<>());
+	    for (InstituicaoFinanceira instituicao : instituicoes) {
+	        LeilaoInstituicaoFinanceira relacao = new LeilaoInstituicaoFinanceira();
+	        relacao.setInstituicaoFinanceira(instituicao);
+	        relacao.setLeilao(leilao);
+	        leilao.getLeilaoInstituicoes().add(relacao);
+	    }
+
+	    leilao.persist();
+	    return leilao;
 	}
 
 	public List<Leilao> listarLeiloes() {

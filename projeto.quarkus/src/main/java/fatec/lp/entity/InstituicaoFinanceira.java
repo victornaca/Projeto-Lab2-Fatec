@@ -1,5 +1,7 @@
 package fatec.lp.entity;
 
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
