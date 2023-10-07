@@ -95,7 +95,7 @@ public class DispositivoInformaticaResource {
 	}
 
 	@PUT
-	
+	@Path("/atualizar-tablet/{id}")
 	public Response atualizarTablet(@PathParam("id") Long id, TabletDTO tabletAtualizado) {
 		Tablet tabletExistente = Tablet.findById(id);
 		if (tabletExistente == null) {
