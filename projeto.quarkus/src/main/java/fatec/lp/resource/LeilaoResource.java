@@ -3,6 +3,7 @@ package fatec.lp.resource;
 import java.util.List;
 
 import fatec.lp.DTO.LeilaoDTO;
+import fatec.lp.entity.InstituicaoFinanceira;
 import fatec.lp.entity.Leilao;
 import fatec.lp.service.LeilaoService;
 import jakarta.inject.Inject;
@@ -17,7 +18,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/leilao")
+@Path("/api/leilao")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class LeilaoResource {

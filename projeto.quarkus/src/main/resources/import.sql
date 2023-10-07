@@ -1,48 +1,92 @@
-INSERT INTO Veiculo (marca, modelo, ano, estadoConservacao, status)
-VALUES ('Toyota', 'Corolla', 2022, 'Novo', 'VENDIDO');
-INSERT INTO Veiculo (marca, modelo, ano, estadoConservacao, status)
-VALUES ('Ford', 'Mustang', 2021, 'Usado', 'NAO VINCULADO');
-INSERT INTO Veiculo (marca, modelo, ano, estadoConservacao, status)
-VALUES ('Honda', 'Civic', 2020, 'Usado', 'NAO VINCULADO');
-INSERT INTO Veiculo (marca, modelo, ano, estadoConservacao, status)
-VALUES ('Volkswagen', 'Golf', 2019, 'Usado', 'VENDIDO');
-INSERT INTO Veiculo (marca, modelo, ano, estadoConservacao, status)
-VALUES ('Chevrolet', 'Cruze', 2022, 'Novo', 'VENDIDO');
+-- Inserir a primeira instituição financeira
+INSERT INTO instituicaofinanceira (nome, cnpj) VALUES ('Banco A', '12345678901');
+
+-- Inserir a segunda instituição financeira
+INSERT INTO instituicaofinanceira (nome, cnpj) VALUES ('Banco B', '23456789012');
+
+-- Inserir a terceira instituição financeira
+INSERT INTO instituicaofinanceira (nome, cnpj) VALUES ('Banco C', '34567890123');
 
 
-INSERT INTO Leilao (dataOcorrencia, dataVisita, status, endereco, cidade, estado)
-VALUES ('2023-09-10', '2023-09-05', 'Agendado', 'Rua das Flores, 123', 'São Paulo', 'SP');
-INSERT INTO Leilao (dataOcorrencia, dataVisita, status, endereco, cidade, estado)
-VALUES ('2023-10-15', '2023-10-10', 'Em andamento', 'Avenida da Praia, 456', 'Rio de Janeiro', 'RJ');
-INSERT INTO Leilao (dataOcorrencia, dataVisita, status, endereco, cidade, estado)
-VALUES ('2023-11-20', '2023-11-15', 'Encerrado', 'Rua das Montanhas, 789', 'Belo Horizonte', 'MG');
-INSERT INTO Leilao (dataOcorrencia, dataVisita, status, endereco, cidade, estado)
-VALUES ('2023-12-05', '2023-11-30', 'Agendado', 'Rua das Palmeiras, 567', 'Porto Alegre', 'RS');
-INSERT INTO Leilao (dataOcorrencia, dataVisita, status, endereco, cidade, estado)
-VALUES ('2024-01-20', '2024-01-15', 'Em andamento', 'Avenida do Sol, 890', 'Salvador', 'BA');
-INSERT INTO Leilao (dataOcorrencia, dataVisita, status, endereco, cidade, estado)
-VALUES ('2024-02-15', '2024-02-10', 'Encerrado', 'Rua das Estrelas, 1234', 'Curitiba', 'PR');
+-- Inserir o primeiro leilão
+INSERT INTO leilao (dataOcorrencia, dataVisita, status, endereco, cidade, estado)
+VALUES ('2023-10-10', '2023-10-15', 'Aberto', 'Endereço 1', 'Cidade 1', 'UF');
+
+-- Vincular o primeiro leilão às instituições financeiras (Assumindo que as instituições financeiras têm IDs 1 e 2)
+INSERT INTO leilaoinstituicaofinanceira (instituicao_financeira_id, leilao_id)
+VALUES (1, 1), (2, 1);
+
+-- Inserir o segundo leilão
+INSERT INTO leilao (dataOcorrencia, dataVisita, status, endereco, cidade, estado)
+VALUES ('2023-11-10', '2023-11-15', 'Fechado', 'Endereço 2', 'Cidade 2', 'UF');
+
+-- Vincular o segundo leilão às instituições financeiras (Assumindo que as instituições financeiras têm IDs 2 e 3)
+INSERT INTO leilaoinstituicaofinanceira (instituicao_financeira_id, leilao_id)
+VALUES (2, 2), (3, 2);
+
+-- Inserir o terceiro leilão
+INSERT INTO leilao (dataOcorrencia, dataVisita, status, endereco, cidade, estado)
+VALUES ('2023-12-10', '2023-12-15', 'Aberto', 'Endereço 3', 'Cidade 3', 'UF');
+
+-- Vincular o terceiro leilão às instituições financeiras (Assumindo que as instituições financeiras têm IDs 1 e 3)
+INSERT INTO leilaoinstituicaofinanceira (instituicao_financeira_id, leilao_id)
+VALUES (1, 3), (3, 3);
 
 
-INSERT INTO InstituicaoFinanceira (nome, cnpj) VALUES ('Banco A', '1234567890');
-INSERT INTO InstituicaoFinanceira (nome, cnpj) VALUES ('Banco B', '9876543210');
-INSERT INTO InstituicaoFinanceira (nome, cnpj) VALUES ('Banco C', '5678901234');
-INSERT INTO InstituicaoFinanceira (nome, cnpj) VALUES ('Banco D', '4321098765');
-INSERT INTO InstituicaoFinanceira (nome, cnpj) VALUES ('Banco E', '2468013579');
-INSERT INTO InstituicaoFinanceira (nome, cnpj) VALUES ('Banco F', '1357924680');
+-- Inserir um Caminhão associado a um Leilão (Assumindo que o Caminhão tem ID 1 e o Leilão tem ID 1)
+INSERT INTO veiculo (marca, modelo, ano, estadoConservacao, status, tipoVeiculo, capacidadeCarga, tipoCarroceria, numeroEixos, temCarreta, leilaoId)
+VALUES ('Caminhão A', 'Modelo A', 2020, 'Bom', 'VINCULADO', 'CAMINHAO', 5000, 'Carga Seca', 2, true, 1);
+
+-- Inserir um Carro associado a um Leilão (Assumindo que o Carro tem ID 2 e o Leilão tem ID 2)
+INSERT INTO veiculo (marca, modelo, ano, estadoConservacao, status, tipoVeiculo, numeroPortas, capacidadePassageiros, combustivel, tipoTransmissao, arCondicionado, travaEletrica, leilaoId)
+VALUES ('Carro B', 'Modelo B', 2019, 'Excelente', 'VINCULADO', 'CARRO', 4, 5, 'Gasolina', 'Automática', true, true, 2);
+
+-- Inserir uma Motocicleta (sem associação a um Leilão)
+INSERT INTO veiculo (marca, modelo, ano, estadoConservacao, status, tipoVeiculo, tipoMotocicleta, cilindrada, partidaEletrica, freioAbs)
+VALUES ('Motocicleta C', 'Modelo C', 2021, 'Bom', 'NAO VINCULADO', 'MOTOCICLETA', 'Esportiva', 600, true, true);
 
 
-INSERT INTO DispositivoInformatica (tipo, modelo, estadoConservacao, status) VALUES ('Laptop', 'Modelo A', 'Bom', 'NAO VINCULADO');
-INSERT INTO DispositivoInformatica (tipo, modelo, estadoConservacao, status) VALUES ('Desktop', 'Modelo B', 'Excelente', 'VENDIDO');
-INSERT INTO DispositivoInformatica (tipo, modelo, estadoConservacao, status) VALUES ('Tablet', 'Modelo C', 'Regular', 'NAO VINCULADO');
-INSERT INTO DispositivoInformatica (tipo, modelo, estadoConservacao, status) VALUES ('Smartphone', 'Modelo D', 'Bom', 'NAO VINCULADO');
-INSERT INTO DispositivoInformatica (tipo, modelo, estadoConservacao, status) VALUES ('Servidor', 'Modelo E', 'Excelente', 'NAO VINCULADO');
-INSERT INTO DispositivoInformatica (tipo, modelo, estadoConservacao, status) VALUES ('Impressora', 'Modelo F', 'Regular', 'NAO VINCULADO');
+-- Inserir um Tablet vinculado a um Leilão (Assumindo que o Tablet tem ID 1 e o Leilão tem ID 1)
+INSERT INTO dispositivoinformatica (tipo, modelo, estadoConservacao, status, tipoDispositivoInformatica, fabricante, tamanhoTela, características, memoria, memoriaRAM, leilaoId)
+VALUES ('Tablet', 'Tablet A', 'Bom', 'VINCULADO', 'TABLET', 'Fabricante A', 10.1, 'Características A', '32 GB', '4 GB', 1);
+
+-- Inserir um Notebook sem vinculação a um Leilão
+INSERT INTO dispositivoinformatica (tipo, modelo, estadoConservacao, status, tipoDispositivoInformatica, fabricante, processador, tamanhoTela, memoria, memoriaRAM, peso)
+VALUES ('Notebook', 'Notebook B', 'Excelente', 'NAO VINCULADO', 'NOTEBOOK', 'Fabricante B', 'Processador B', 15.6, '512 GB', '8 GB', '2.0 kg');
+
+-- Inserir um Monitor vinculado a um Leilão (Assumindo que o Monitor tem ID 2 e o Leilão tem ID 2)
+INSERT INTO dispositivoinformatica (tipo, modelo, estadoConservacao, status, tipoDispositivoInformatica, fabricante, tamanhoTela, recursos, entradas, peso, leilaoId)
+VALUES ('Monitor', 'Monitor C', 'Bom', 'VINCULADO', 'MONITOR', 'Fabricante C', 27.0, 'Recursos C', 'HDMI, VGA', '5.5 kg', 2);
+
+-- Inserir um Celular sem vinculação a um Leilão
+INSERT INTO dispositivoinformatica (tipo, modelo, estadoConservacao, status, tipoDispositivoInformatica, fabricante, sistemaOperacional, tamanhoTela, memoria, camera)
+VALUES ('Celular', 'Celular D', 'Bom', 'NAO VINCULADO', 'CELULAR', 'Fabricante D', 'Android', 6.0, '128 GB', '16 MP');
+
+-- Inserir outro Tablet sem vinculação a um Leilão
+INSERT INTO dispositivoinformatica (tipo, modelo, estadoConservacao, status, tipoDispositivoInformatica, fabricante, tamanhoTela, características, memoria, memoriaRAM)
+VALUES ('Tablet', 'Tablet E', 'Bom', 'VINCULADO', 'TABLET', 'Fabricante E', 8.0, 'Características E', '64 GB', '6 GB');
 
 
-INSERT INTO Cliente (nome, email) VALUES ('João Silva', 'joao@email.com');
-INSERT INTO Cliente (nome, email) VALUES ('Maria Santos', 'maria@email.com');
-INSERT INTO Cliente (nome, email) VALUES ('Pedro Alves', 'pedro@email.com');
-INSERT INTO Cliente (nome, email) VALUES ('Ana Souza', 'ana@email.com');
-INSERT INTO Cliente (nome, email) VALUES ('Luiz Oliveira', 'luiz@email.com');
-INSERT INTO Cliente (nome, email) VALUES ('Carla Fernandes', 'carla@email.com');
+
+-- Inserir o primeiro cliente
+INSERT INTO cliente (nome, email) VALUES ('Cliente A', 'clienteA@email.com');
+
+-- Inserir o segundo cliente
+INSERT INTO cliente (nome, email) VALUES ('Cliente B', 'clienteB@email.com');
+
+-- Inserir o terceiro cliente
+INSERT INTO cliente (nome, email) VALUES ('Cliente C', 'clienteC@email.com');
+
+
+
+-- Inserir o primeiro lance ligando a um Veículo (Assumindo que o Veículo tem ID 1 e o Cliente tem ID 1)
+INSERT INTO lance (dataHora, valor, Veidculoid, Clienteid) 
+VALUES ('2023-10-10 08:00:00', 1000.00, 1, 1);
+
+-- Inserir o segundo lance ligando a um Dispositivo de Informática (Assumindo que o Dispositivo tem ID 2 e o Cliente tem ID 2)
+INSERT INTO lance (dataHora, valor, Dispositivoid, Clienteid) 
+VALUES ('2023-10-11 09:30:00', 800.00, 2, 2);
+
+-- Inserir o terceiro lance ligando a um Veículo (Assumindo que o Veículo tem ID 3 e o Cliente tem ID 3)
+INSERT INTO lance (dataHora, valor, Veidculoid, Clienteid) 
+VALUES ('2023-10-12 10:45:00', 1200.00, 3, 3);
