@@ -13,6 +13,8 @@ import fatec.lp.entity.Veiculo;
 import fatec.lp.resource.Request.VincularLeilaoRequest;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.Response;
 
 @ApplicationScoped
 public class VeiculoService {
@@ -77,8 +79,12 @@ public class VeiculoService {
     }
 	
     @Transactional
-    public Carro atualizarCarro(Long id, CarroDTO carroAtualizado) {
+    public Response atualizarCarro(Long id, CarroDTO carroAtualizado) {
         Carro carro = Carro.findById(id);
+        
+        if (carro == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Carro não encontrada").build();
+        }
 
         if (carro != null) {
         	carro.setNumeroPortas(carroAtualizado.getNumeroPortas());
@@ -94,13 +100,17 @@ public class VeiculoService {
             carro.persist();
         }
 
-        return carro;
+        return Response.status(Response.Status.OK).entity("Carro atualizado com sucesso").build();
     }
     
     @Transactional
-    public Caminhao atualizarCaminhao(Long id, CaminhaoDTO caminhaoAtualizado) {
+    public Response atualizarCaminhao(Long id, CaminhaoDTO caminhaoAtualizado) {
         Caminhao caminhao = Caminhao.findById(id);
 
+        if (caminhao == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Caminhao não encontrada").build();
+        }
+        
         if (caminhao != null) {
             caminhao.setCapacidadeCarga(caminhaoAtualizado.getCapacidadeCarga());
             caminhao.setTipoCarroceria(caminhaoAtualizado.getTipoCarroceria());
@@ -114,13 +124,17 @@ public class VeiculoService {
             caminhao.persist();
         }
 
-        return caminhao;
+        return Response.status(Response.Status.OK).entity("Caminhao atualizado com sucesso").build();
     }
 	
     @Transactional
-    public Motocicleta atualizarMotocicleta(Long id, MotocicletaDTO motocicletaAtualizada) {
+    public Response atualizarMotocicleta(Long id, MotocicletaDTO motocicletaAtualizada) {   	
         Motocicleta motocicleta = Motocicleta.findById(id);
 
+        if (motocicleta == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Motocicleta não encontrada").build();
+        }
+        
         if (motocicleta != null) {
             motocicleta.setTipoMotocicleta(motocicletaAtualizada.getTipoMotocicleta());
             motocicleta.setCilindrada(motocicletaAtualizada.getCilindrada());
@@ -134,7 +148,7 @@ public class VeiculoService {
             motocicleta.persist();
         }
 
-        return motocicleta;
+        return Response.status(Response.Status.OK).entity("Motocicleta atualizado com sucesso").build();
     }
 	
 	@Transactional
@@ -143,24 +157,38 @@ public class VeiculoService {
 	}
 	
 	@Transactional
-	public Veiculo vincularLeilao (Long veiculoId, VincularLeilaoRequest request) {
+	public Response vincularLeilao (Long veiculoId, Long leilaoId) {
 		Veiculo veiculo = Veiculo.findById(veiculoId);
 		if (veiculo == null) {
-			return null;
+            return Response.status(Response.Status.NOT_FOUND).entity("Veiculo não encontrado").build();
 		}
 		
 		if (veiculo.getStatus().equals("VENDIDO")) {
-			return null;
+            return Response.status(Response.Status.BAD_REQUEST).entity("Veiculo já vendido").build();
 		}
 		
-		Leilao leilao = Leilao.findById(request.getLeilaoId());
-        if (leilao == null) {
-            return null;
-        }
+		Leilao leilao = Leilao.findById(leilaoId);
+		if (leilao == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Leilao não encontrado").build();
+		}
         
 		veiculo.setStatus("VINCULADO");
 		veiculo.setLeilao(leilao);
 		
-		return veiculo;
+        return Response.status(Response.Status.OK).entity(veiculo).build();
+	}
+	
+	public Response listarVeiculoAssociadoLeilao (Long leilaoId) {
+        if (leilaoId == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Leilao Nulo").build();
+        }
+        
+        List<Veiculo> veiculos = Veiculo.list("leilao.id", leilaoId);
+        
+        if (veiculos.isEmpty()) {
+        	return Response.status(Response.Status.NOT_FOUND).entity("Veiculos não encontrado").build();
+        }
+        
+		return Response.status(Response.Status.OK).entity(veiculos).build();
 	}
 }
