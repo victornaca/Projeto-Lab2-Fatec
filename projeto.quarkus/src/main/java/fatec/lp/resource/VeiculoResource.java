@@ -20,6 +20,7 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
@@ -66,37 +67,22 @@ public class VeiculoResource {
     @PUT
     @Path("/atualizar-carro/{id}")
     public Response atualizarCarro(@PathParam("id") Long id, CarroDTO carroAtualizado) {
-    	Carro carroExistente = Carro.findById(id);
-
-        if (carroExistente == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity("Carro não encontrada").build();
-        }
-    	veiculoService.atualizarCarro(id,carroAtualizado);
-    	return Response.status(Response.Status.OK).entity("Carro atualizado com sucesso").build();
+    	Response carro = veiculoService.atualizarCarro(id,carroAtualizado);
+    	return carro;
     }
     
     @PUT
     @Path("/atualizar-caminhao/{id}")
     public Response atualizarCaminhao(@PathParam("id") Long id, CaminhaoDTO caminhaoAtualizado) {
-    	Caminhao caminhaoExistente = Caminhao.findById(id);
-
-        if (caminhaoExistente == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity("Carro não encontrada").build();
-        }
-    	veiculoService.atualizarCaminhao(id,caminhaoAtualizado);
-    	return Response.status(Response.Status.OK).entity("Carro atualizado com sucesso").build();
+    	Response caminhao = veiculoService.atualizarCaminhao(id,caminhaoAtualizado);
+    	return caminhao;
     }
     
     @PUT
     @Path("/atualizar-moto/{id}")
     public Response atualizarMotocicleta(@PathParam("id") Long id, MotocicletaDTO motocicletaAtualizado) {
-    	Motocicleta motoExistente = Motocicleta.findById(id);
-
-        if (motoExistente == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity("Carro não encontrada").build();
-        }
-    	veiculoService.atualizarMotocicleta(id,motocicletaAtualizado);
-    	return Response.status(Response.Status.OK).entity("Carro atualizado com sucesso").build();
+    	Response motocicleta = veiculoService.atualizarMotocicleta(id,motocicletaAtualizado);
+    	return motocicleta;
     }
     
     @DELETE
@@ -107,13 +93,16 @@ public class VeiculoResource {
     }
     
     @PUT
-    @Path("vincular-veiculo/{id}")
-    public Response vincularLeilao(@PathParam("id") Long veiculoId, VincularLeilaoRequest request) {
-		Veiculo veiculo = veiculoService.vincularLeilao(veiculoId, request);
-		if (veiculo == null) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(veiculo).build();
-        }
-    	return Response.status(Response.Status.OK).entity(veiculo).build();
-    	
+    @Path("vincular-veiculo/{veiculoId}/{leilaoId}")
+    public Response vincularLeilao(@PathParam("veiculoId") Long veiculoId, @PathParam("leilaoId") Long leilaoId) {
+		Response veiculo = veiculoService.vincularLeilao(veiculoId, leilaoId);	
+		return veiculo;
+    }
+    
+    @GET
+    @Path("/veiculo-por-leilao/{leilaoId}")
+    public Response listarVeiculoAssociadoLeilao(@PathParam("leilaoId")Long leilaoId) {
+    	Response veiculo = veiculoService.listarVeiculoAssociadoLeilao(leilaoId);
+    	return veiculo;
     }
 }

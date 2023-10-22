@@ -13,9 +13,12 @@ import fatec.lp.entity.Leilao;
 import fatec.lp.entity.Monitor;
 import fatec.lp.entity.Notebook;
 import fatec.lp.entity.Tablet;
+import fatec.lp.entity.Veiculo;
 import fatec.lp.resource.Request.VincularLeilaoRequest;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.Response;
 
 @ApplicationScoped
 public class DispositivoInformaticaService {
@@ -90,9 +93,13 @@ public class DispositivoInformaticaService {
 	}
 
 	@Transactional
-	public Celular atualizarCelular(Long id, CelularDTO celularAtualizado) {
+	public Response atualizarCelular(Long id, CelularDTO celularAtualizado) {
 		Celular celular = Celular.findById(id);
 
+		if (celular == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Celular não encontrado").build();
+        }
+		
 		if (celular != null) {
 			celular.setModelo(celularAtualizado.getModelo());
 			celular.setFabricante(celularAtualizado.getFabricante());
@@ -105,13 +112,17 @@ public class DispositivoInformaticaService {
 			celular.persist();
 		}
 
-		return celular;
+		return Response.status(Response.Status.OK).entity("Celular atualizado com sucesso").build();
 	}
 
 	@Transactional
-	public Monitor atualizarMonitor(Long id, MonitorDTO monitorAtualizado) {
+	public Response atualizarMonitor(Long id, MonitorDTO monitorAtualizado) {
 		Monitor monitor = Monitor.findById(id);
 
+		if (monitor == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Monitor não encontrado").build();
+        }
+		
 		if (monitor != null) {
 			monitor.setModelo(monitorAtualizado.getModelo());
 			monitor.setFabricante(monitorAtualizado.getFabricante());
@@ -124,12 +135,16 @@ public class DispositivoInformaticaService {
 			monitor.persist();
 		}
 
-		return monitor;
+		return Response.status(Response.Status.OK).entity("Monitor atualizado com sucesso").build();
 	}
 
 	@Transactional
-	public NotebookDTO atualizarNotebook(Long id, NotebookDTO notebookAtualizado) {
+	public Response atualizarNotebook(Long id, NotebookDTO notebookAtualizado) {
 		Notebook notebook = Notebook.findById(id);
+		
+		if (notebook == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Notebook não encontrado").build();
+        }
 
 		if (notebook != null) {
 			notebook.setModelo(notebookAtualizado.getModelo());
@@ -145,13 +160,17 @@ public class DispositivoInformaticaService {
 			notebook.persist();
 
 		}
-		return notebookAtualizado;
+		return Response.status(Response.Status.OK).entity("Notebook atualizado com sucesso").build();
 	}
 
 	@Transactional
-	public TabletDTO atualizarTablet(Long id, TabletDTO tabletAtualizado) {
+	public Response atualizarTablet(Long id, TabletDTO tabletAtualizado) {
 		Tablet tablet = Tablet.findById(id);
 
+		if (tablet == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Tablet não encontrado").build();
+        }
+		
 		if (tablet != null) {
 			tablet.setModelo(tabletAtualizado.getModelo());
 			tablet.setFabricante(tabletAtualizado.getFabricante());
@@ -166,7 +185,7 @@ public class DispositivoInformaticaService {
 			tablet.persist();
 
 		}
-		return tabletAtualizado;
+		return Response.status(Response.Status.OK).entity("Tablet atualizado com sucesso").build();
 	}
 
 	public List<DispositivoInformatica> ListarDispositivoInformatica() {
@@ -183,24 +202,38 @@ public class DispositivoInformaticaService {
 	}
 
 	@Transactional
-	public DispositivoInformatica vincularLeilao(Long dispositivoId, VincularLeilaoRequest request) {
+	public Response vincularLeilao(Long dispositivoId, Long leilaoId) {
 		DispositivoInformatica dispositivo = DispositivoInformatica.findById(dispositivoId);
 		if (dispositivo == null) {
-			return null;
+            return Response.status(Response.Status.NOT_FOUND).entity("Dispositivo não encontrado").build();
 		}
 
 		if (dispositivo.getStatus().equals("VENDIDO")) {
-			return null;
+            return Response.status(Response.Status.BAD_REQUEST).entity("Dispositivo já vendido").build();
 		}
 
-		Leilao leilao = Leilao.findById(request.getLeilaoId());
+		Leilao leilao = Leilao.findById(leilaoId);
 		if (leilao == null) {
-			return null;
+            return Response.status(Response.Status.NOT_FOUND).entity("Leilao não encontrado").build();
 		}
 
 		dispositivo.setStatus("VINCULADO");
 		dispositivo.setLeilao(leilao);
 
-		return dispositivo;
+		return Response.status(Response.Status.OK).entity(dispositivo).build();
+	}
+	
+	public Response listarDispositivoAssociadoLeilao (Long leilaoId) {
+        if (leilaoId == null) {
+        	return Response.status(Response.Status.BAD_REQUEST).entity("Leilao Nulo").build();
+        }
+        
+        List<DispositivoInformatica> dispositivos = DispositivoInformatica.list("leilao.id", leilaoId);
+        
+        if (dispositivos.isEmpty()) {
+        	return Response.status(Response.Status.NOT_FOUND).entity("Dispositivos não encontrado").build();
+        }
+        
+		return Response.status(Response.Status.OK).entity(dispositivos).build();
 	}
 }
