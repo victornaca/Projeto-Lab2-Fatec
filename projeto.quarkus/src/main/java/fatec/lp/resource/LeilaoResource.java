@@ -62,4 +62,10 @@ public class LeilaoResource {
 		leilaoService.deletarLeilao(id, leilao);
 		return Response.noContent().build();
 	}
+	
+	@GET
+	@Path("/pordataocorrencia")
+	public List<Leilao> listarLeiloesByDataOcorrencia(){
+		return leilaoService.listarLeiloesByDataOcorrencia();
+	}
 }
