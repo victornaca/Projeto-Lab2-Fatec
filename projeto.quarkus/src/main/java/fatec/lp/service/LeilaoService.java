@@ -7,6 +7,7 @@ import fatec.lp.DTO.LeilaoDTO;
 import fatec.lp.entity.InstituicaoFinanceira;
 import fatec.lp.entity.Leilao;
 import fatec.lp.entity.LeilaoInstituicaoFinanceira;
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 
@@ -72,5 +73,9 @@ public class LeilaoService {
 	@Transactional
 	public void deletarLeilao(Long id, Leilao leilao) {
 		Leilao.deleteById(id);
+	}
+	
+	public List<Leilao> listarLeiloesByDataOcorrencia() {
+		return Leilao.listAll(Sort.by("dataOcorrencia"));
 	}
 }
