@@ -15,6 +15,7 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
@@ -32,9 +33,11 @@ public class LeilaoResource {
 			Leilao leilao = leilaoService.cadastrarLeilao(leilaoDTO);
 			return Response.status(Response.Status.CREATED).entity(leilao).build();
 		} catch (IllegalArgumentException e) {
-			return Response.status(Response.Status.BAD_REQUEST).entity("Erro ao cadastrar o leilão: " + e.getMessage()).build();
+			return Response.status(Response.Status.BAD_REQUEST).entity("Erro ao cadastrar o leilão: " + e.getMessage())
+					.build();
 		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao cadastrar o leilão: " + e.getMessage()).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity("Erro ao cadastrar o leilão: " + e.getMessage()).build();
 		}
 	}
 
@@ -62,10 +65,17 @@ public class LeilaoResource {
 		leilaoService.deletarLeilao(id, leilao);
 		return Response.noContent().build();
 	}
-	
+
 	@GET
 	@Path("/pordataocorrencia")
-	public List<Leilao> listarLeiloesByDataOcorrencia(){
+	public List<Leilao> listarLeiloesByDataOcorrencia() {
 		return leilaoService.listarLeiloesByDataOcorrencia();
+	}
+
+	@GET
+	@Path("/porTipo/{tipoExtensao}")
+	public List<Leilao> buscarLeiloesPorTipo(@PathParam("tipoExtensao") String tipoExtensao) {
+		List<Leilao> leiloes = leilaoService.buscarLeiloesPorTipo(tipoExtensao);
+		return leiloes;
 	}
 }

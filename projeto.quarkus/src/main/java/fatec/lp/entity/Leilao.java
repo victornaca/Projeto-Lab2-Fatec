@@ -40,4 +40,12 @@ public class Leilao extends PanacheEntityBase {
 	@OneToMany(mappedBy = "leilao", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	@JsonManagedReference
     private List<LeilaoInstituicaoFinanceira> leilaoInstituicoes;
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "leilao")
+	private List<Veiculo> veiculos;
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "leilao")
+	private List<DispositivoInformatica> dispositivoInformatica;
 }

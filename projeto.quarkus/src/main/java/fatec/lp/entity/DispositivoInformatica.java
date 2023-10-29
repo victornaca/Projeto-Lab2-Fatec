@@ -1,5 +1,7 @@
 package fatec.lp.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
@@ -33,7 +35,8 @@ public class DispositivoInformatica  extends PanacheEntityBase {
 	private String status = "NAO VINCULADO";
 	
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "leilaoId")
     private Leilao leilao;
-
+   
 }
