@@ -1,5 +1,7 @@
 package br.gov.sp.fatec.entity;
 
+import br.gov.sp.fatec.dto.DispositivoInformaticaDTO;
+import br.gov.sp.fatec.dto.VeiculoDTO;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
@@ -18,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipoDispositivoInformatica", discriminatorType = DiscriminatorType.STRING)
-public class DispositivoInformatica  extends PanacheEntityBase {
+public abstract class DispositivoInformatica  extends PanacheEntityBase {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,5 +37,10 @@ public class DispositivoInformatica  extends PanacheEntityBase {
     @ManyToOne
     @JoinColumn(name = "leilaoId")
     private Leilao leilao;
+    
+    public DispositivoInformatica() {
+    }
+    
+    public abstract DispositivoInformaticaDTO toDTO();
 
 }
