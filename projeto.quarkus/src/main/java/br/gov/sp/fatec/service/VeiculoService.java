@@ -133,7 +133,8 @@ public class VeiculoService {
 	    	throw new WebApplicationException ("Veículos não encontrados para o Leilão informado", Response.Status.NOT_FOUND);
 	    }
 
-	    List<VeiculoDTO> veiculoDTOs = veiculos.stream()
+	    List<VeiculoDTO> veiculoDTOs = 
+	    		veiculos.stream()
 	            .map(Veiculo::toDTO) //
 	            .collect(Collectors.toList());
 
