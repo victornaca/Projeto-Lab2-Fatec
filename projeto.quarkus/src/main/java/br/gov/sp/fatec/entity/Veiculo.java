@@ -1,5 +1,6 @@
 package br.gov.sp.fatec.entity;
 
+import br.gov.sp.fatec.dto.VeiculoDTO;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
@@ -17,7 +18,7 @@ import lombok.Data;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipoVeiculo", discriminatorType = DiscriminatorType.STRING)
-public class Veiculo extends PanacheEntityBase{
+public abstract class Veiculo extends PanacheEntityBase{
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,9 +32,14 @@ public class Veiculo extends PanacheEntityBase{
 	
 	private String estadoConservacao;
 	
-	private String status;
+	private String status = "NAO VINCULADO";
 	
     @ManyToOne
     @JoinColumn(name = "leilaoId")
     private Leilao leilao;
+    
+    public Veiculo() {
+    }
+    
+    public abstract VeiculoDTO toDTO();
 }
