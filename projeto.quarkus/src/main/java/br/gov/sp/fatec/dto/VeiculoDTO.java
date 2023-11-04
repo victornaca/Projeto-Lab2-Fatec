@@ -8,4 +8,5 @@ public class VeiculoDTO {
 	private String modelo;
 	private Integer ano;
 	private String estadoConservacao;
+	private String status;
 }

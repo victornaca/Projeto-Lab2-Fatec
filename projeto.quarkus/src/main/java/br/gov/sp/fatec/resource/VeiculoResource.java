@@ -5,6 +5,7 @@ import java.util.List;
 import br.gov.sp.fatec.dto.CaminhaoDTO;
 import br.gov.sp.fatec.dto.CarroDTO;
 import br.gov.sp.fatec.dto.MotocicletaDTO;
+import br.gov.sp.fatec.dto.VeiculoDTO;
 import br.gov.sp.fatec.entity.Veiculo;
 import br.gov.sp.fatec.service.VeiculoService;
 import jakarta.inject.Inject;
@@ -27,57 +28,23 @@ public class VeiculoResource {
     @Inject
     VeiculoService veiculoService;
     
-    @POST
-    @Path("/cadastrar-carro")
-    public Response cadastrarCarro(CarroDTO carroDTO) {
-        veiculoService.cadastrarCarro(carroDTO);
-        return Response.status(Response.Status.CREATED).build();
-    }
     
-    @POST
-    @Path("/cadastrar-caminhao")
-    public Response cadastrarCaminhao(CaminhaoDTO caminhaoDTO) {
-        veiculoService.cadastrarCaminhao(caminhaoDTO);
-        return Response.status(Response.Status.CREATED).entity("Caminhão cadastrado com sucesso").build();
-    }
-
-    @POST
-    @Path("/cadastrar-moto")
-    public Response cadastrarMotocicleta(MotocicletaDTO motocicletaDTO) {
-        veiculoService.cadastrarMoto(motocicletaDTO);
-        return Response.status(Response.Status.CREATED).entity("Motocicleta cadastrada com sucesso").build();
-    }
-
     @GET
-    public List<Veiculo> listarVeiculos() {
+    public List<Veiculo
+    > listarVeiculos() {
         return veiculoService.listarVeiculos();
     }
     
     @GET
     @Path("{id}")
-    public Veiculo listarVeiculoId(@PathParam("id") Long id) {
-        return veiculoService.listarVeiculoId(id);
-    }
-    
-    @PUT
-    @Path("/atualizar-carro/{id}")
-    public Response atualizarCarro(@PathParam("id") Long id, CarroDTO carroAtualizado) {
-    	Response carro = veiculoService.atualizarCarro(id,carroAtualizado);
-    	return carro;
-    }
-    
-    @PUT
-    @Path("/atualizar-caminhao/{id}")
-    public Response atualizarCaminhao(@PathParam("id") Long id, CaminhaoDTO caminhaoAtualizado) {
-    	Response caminhao = veiculoService.atualizarCaminhao(id,caminhaoAtualizado);
-    	return caminhao;
-    }
-    
-    @PUT
-    @Path("/atualizar-moto/{id}")
-    public Response atualizarMotocicleta(@PathParam("id") Long id, MotocicletaDTO motocicletaAtualizado) {
-    	Response motocicleta = veiculoService.atualizarMotocicleta(id,motocicletaAtualizado);
-    	return motocicleta;
+    public Response listarVeiculoId(@PathParam("id") Long id) {
+    	Veiculo veiculo = Veiculo.findById(id);
+    	if (veiculo != null) {
+    		VeiculoDTO veiculoDTO = veiculo.toDTO();
+    		return Response.ok(veiculoDTO).build();
+    	} else {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
     }
     
     @DELETE
@@ -87,11 +54,77 @@ public class VeiculoResource {
     	return Response.noContent().build();
     }
     
+    @POST
+    @Path("/cadastrar-carro")
+    public Response cadastrarCarro(CarroDTO carroDTO) {
+    	VeiculoDTO carroCriadoDTO = veiculoService.cadastrarCarro(carroDTO);
+        if (carroCriadoDTO != null) {
+            return Response.status(Response.Status.CREATED).entity(carroCriadoDTO).build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+    
+    @POST
+    @Path("/cadastrar-caminhao")
+    public Response cadastrarCaminhao(CaminhaoDTO caminhaoDTO) {
+    	VeiculoDTO caminhaoCriadoDTO = veiculoService.cadastrarCaminhao(caminhaoDTO);
+        if (caminhaoCriadoDTO != null) {
+            return Response.status(Response.Status.CREATED).entity(caminhaoCriadoDTO).build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
+    @POST
+    @Path("/cadastrar-moto")
+    public Response cadastrarMotocicleta(MotocicletaDTO motocicletaDTO) {
+    	VeiculoDTO motocicletaCriadoDTO = veiculoService.cadastrarMotocicleta(motocicletaDTO);
+        if (motocicletaCriadoDTO != null) {
+            return Response.status(Response.Status.CREATED).entity(motocicletaCriadoDTO).build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+    
+    @PUT
+    @Path("/atualizar-carro/{id}")
+    public Response atualizarCarro(@PathParam("id") Long id, CarroDTO carroDTO) {
+    	VeiculoDTO carro = veiculoService.atualizarCarro(id,carroDTO);
+    	if (carro != null) {
+            return Response.ok(carro).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
+    
+    @PUT
+    @Path("/atualizar-caminhao/{id}")
+    public Response atualizarCaminhao(@PathParam("id") Long id, CaminhaoDTO caminhaoDTO) {
+    	VeiculoDTO caminhao = veiculoService.atualizarCaminhao(id,caminhaoDTO);
+    	if (caminhao != null) {
+            return Response.ok(caminhao).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
+    
+    @PUT
+    @Path("/atualizar-moto/{id}")
+    public Response atualizarMotocicleta(@PathParam("id") Long id, MotocicletaDTO motocicletaDTO) {
+    	VeiculoDTO motocicleta = veiculoService.atualizarMotocicleta(id,motocicletaDTO);
+    	if (motocicleta != null) {
+            return Response.ok(motocicleta).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
+    
     @PUT
     @Path("vincular-veiculo/{veiculoId}/{leilaoId}")
     public Response vincularLeilao(@PathParam("veiculoId") Long veiculoId, @PathParam("leilaoId") Long leilaoId) {
-		Response veiculo = veiculoService.vincularLeilao(veiculoId, leilaoId);	
-		return veiculo;
+    	VeiculoDTO veiculoDTO = veiculoService.vincularLeilao(veiculoId, leilaoId);
+        return Response.status(Response.Status.OK).entity(veiculoDTO).build();
     }
     
     @GET
