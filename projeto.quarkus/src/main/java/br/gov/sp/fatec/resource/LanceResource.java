@@ -1,3 +1,4 @@
+
 package br.gov.sp.fatec.resource;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
@@ -21,9 +23,9 @@ public class LanceResource {
 
 	@Inject
 	private LanceService lanceService;
-	
+
 	@GET
-	public List<Lance> listarLances(){
+	public List<Lance> listarLances() {
 		return lanceService.listarLances();
 	}
 
@@ -47,5 +49,11 @@ public class LanceResource {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 		return Response.status(Response.Status.OK).entity(lance).build();
+	}
+
+	@GET
+	@Path("/lances-por-produto")
+	public List<Lance> buscarLancesPorTipo(@QueryParam("produto") Long produto) {
+		return lanceService.buscarLancesPorProduto(produto);
 	}
 }
