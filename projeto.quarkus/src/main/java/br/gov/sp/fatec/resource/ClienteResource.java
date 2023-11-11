@@ -2,6 +2,8 @@ package br.gov.sp.fatec.resource;
 
 import java.util.List;
 
+import br.gov.sp.fatec.dto.ClienteDTO;
+import br.gov.sp.fatec.dto.LeilaoDTO;
 import br.gov.sp.fatec.entity.Cliente;
 import br.gov.sp.fatec.service.ClienteService;
 import jakarta.inject.Inject;
@@ -22,36 +24,40 @@ import jakarta.ws.rs.core.Response;
 public class ClienteResource {
 	
 	@Inject
-	ClienteService clienteservice;
+	ClienteService clienteService;
 	
 	@POST
-	public Response cadastrarCliente(Cliente cliente) {
-		clienteservice.cadastrarcliente(cliente);
+	public Response cadastrarCliente(ClienteDTO clienteDTO) {
+		clienteService.cadastrarcliente(clienteDTO);
 		return Response.status(Response.Status.CREATED).build();
 	}
 	
 	@GET
 	public List<Cliente> listarCliente(){
-		return clienteservice.listarclientes();
+		return clienteService.listarclientes();
 	}
 	
 	@GET
 	@Path("{id}")
 	public Cliente listarClienteId(@PathParam("id") Long id) {
-		return 	clienteservice.listarClienteId(id);
+		return 	clienteService.listarClienteId(id);
 	}
 	
 	@PUT
 	@Path("{id}")
-	public Response atualizarCliente(@PathParam("id") Long id, Cliente clienteAtualizado) {
-		clienteservice.atualizarCliente(id, clienteAtualizado);
-		return Response.status(Response.Status.OK).build();
+	public Response atualizarCliente(@PathParam("id") Long id, ClienteDTO clienteDTO) {
+		ClienteDTO cliente = clienteService.atualizarCliente(id,clienteDTO);
+    	if (cliente != null) {
+            return Response.ok(cliente).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
 	}
 	
 	@DELETE
 	@Path("{id}")
 	public Response deletarCliente(@PathParam("id") Long id, Cliente cliente) {
-		clienteservice.deletarCliente(id, cliente);
+		clienteService.deletarCliente(id, cliente);
 		return Response.noContent().build();
 	}
 
