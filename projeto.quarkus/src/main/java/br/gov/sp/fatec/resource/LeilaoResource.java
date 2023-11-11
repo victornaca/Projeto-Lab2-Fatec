@@ -3,7 +3,7 @@ package br.gov.sp.fatec.resource;
 import java.util.List;
 
 import br.gov.sp.fatec.dto.LeilaoDTO;
-import br.gov.sp.fatec.entity.InstituicaoFinanceira;
+import br.gov.sp.fatec.dto.VeiculoDTO;
 import br.gov.sp.fatec.entity.Leilao;
 import br.gov.sp.fatec.service.LeilaoService;
 import jakarta.inject.Inject;
@@ -29,13 +29,13 @@ public class LeilaoResource {
 	@POST
 	public Response cadastrarLeilao(LeilaoDTO leilaoDTO) {
 		try {
-			Leilao leilao = leilaoService.cadastrarLeilao(leilaoDTO);
-			return Response.status(Response.Status.CREATED).entity(leilao).build();
-		} catch (IllegalArgumentException e) {
-			return Response.status(Response.Status.BAD_REQUEST).entity("Erro ao cadastrar o leilão: " + e.getMessage()).build();
-		} catch (Exception e) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao cadastrar o leilão: " + e.getMessage()).build();
-		}
+            LeilaoDTO leilao = leilaoService.cadastrarLeilao(leilaoDTO);
+            return Response.status(Response.Status.CREATED).entity(leilao).build();
+        } catch (IllegalArgumentException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Erro ao cadastrar o leilão: " + e.getMessage()).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao cadastrar o leilão: " + e.getMessage()).build();
+        }
 	}
 
 	@GET
@@ -51,9 +51,13 @@ public class LeilaoResource {
 
 	@PUT
 	@Path("{id}")
-	public Response atualizarLeilao(@PathParam("id") Long id, Leilao leilaoAtualizado) {
-		leilaoService.atualizarLeilao(id, leilaoAtualizado);
-		return Response.status(Response.Status.OK).build();
+	public Response atualizarLeilao(@PathParam("id") Long id, LeilaoDTO leilaoDTO) {
+		LeilaoDTO leilao = leilaoService.atualizarLeilao(id,leilaoDTO);
+    	if (leilao != null) {
+            return Response.ok(leilao).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
 	}
 
 	@DELETE
