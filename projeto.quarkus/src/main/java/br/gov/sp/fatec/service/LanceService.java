@@ -11,10 +11,15 @@ import br.gov.sp.fatec.entity.DispositivoInformatica;
 import br.gov.sp.fatec.entity.Lance;
 import br.gov.sp.fatec.entity.Veiculo;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 
 @ApplicationScoped
 public class LanceService {
+
+	@Inject
+	EntityManager entityManager;
 
 	private ModelMapper modelMapper;
 
@@ -22,6 +27,7 @@ public class LanceService {
         this.modelMapper = new ModelMapper();
     }
 	
+
 	public List<Lance> listarLances() {
 		return Lance.listAll();
 	}
@@ -66,5 +72,12 @@ public class LanceService {
 	    dispositivo.persist();
 
 	    return modelMapper.map(lance, LanceDTO.class);
+	}
+
+	@Transactional
+	public List<Lance> buscarLancesPorProduto(Long produto) {
+		String jpql = "SELECT l FROM Lance l " + "WHERE (l.dispositivo.id = :produto OR l.veiculo.id = :produto)";
+
+		return entityManager.createQuery(jpql, Lance.class).setParameter("produto", produto).getResultList();
 	}
 }
