@@ -1,15 +1,42 @@
-# Projeto Nadalete - Leilao com Quarkus+Hibernate
+# Project Nadalete - E-Auction with Quarkus+Hibernate
 
-## Para executar: 
-* mvn quarkus:dev
+## How to Run:
+```shell script
+mvn quarkus:dev
+```
 
-## Caso tenha algum erro envolvendo versão de Java:
-* mvn clean
+## If you encounter any Java version-related errors:
+```shell script
+mvn clean
+```
+## View Endpoints with Swagger:
+* [Swagger UI](http://localhost:8080/q/swagger-ui/#/)
+## Source Code Location
 
-## Para visualizar os end-points com Swagger
-* http://localhost:8080/q/swagger-ui/#/
+The source code for the project is available at [GitHub](https://github.com/victornaca/Projeto-Lab2-Fatec/tree/main/projeto.quarkus/src/main).
 
-### Integrantes:
+### Team Members:
 Emanuele Campos
 Victor Fernandes
+
+## Project Overview:
+
+Welcome to Project E-Auction, a university project aimed at creating a Java+Quarkus application to facilitate an electronic auction platform. The focus is on auctions for vehicles and computer devices.
+
+### Project Dependencies and Guides
+
+- **Hibernate ORM:** Define your persistent model with Hibernate ORM and Jakarta Persistence. [Hibernate ORM Guide](https://quarkus.io/guides/hibernate-orm)
+- **JDBC Driver - H2:** Connect to the H2 database via JDBC. [JDBC Driver Guide](https://quarkus.io/guides/datasource)
+- **SmallRye OpenAPI:** Document your REST APIs with OpenAPI, comes with Swagger UI. [OpenAPI Guide](https://quarkus.io/guides/openapi-swaggerui)
+- **RESTEasy Classic:** REST endpoint framework implementing Jakarta REST and more. [RESTEasy Guide](https://quarkus.io/guides/resteasy)
+
+### Provided Code Samples
+
+#### Hibernate ORM with Panache
+
+- Create your first JPA entity. [Hibernate ORM Guide Section](https://quarkus.io/guides/hibernate-orm-panache)
+
+#### RESTEasy JAX-RS
+
+- Easily start your RESTful Web Services. [Related guide section](https://quarkus.io/guides/getting-started#the-jax-rs-resources)
 
