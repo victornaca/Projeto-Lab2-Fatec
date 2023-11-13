@@ -1,5 +1,6 @@
 package br.gov.sp.fatec.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,5 +81,17 @@ public class LeilaoService {
 	
 	public List<Leilao> listarLeiloesByDataOcorrencia() {
 		return Leilao.listAll(Sort.by("dataOcorrencia"));
+	}
+	
+	public String StatusLeilao(LocalDateTime dataOcorrencia, LocalDateTime dataVisita) {
+	    LocalDateTime now = LocalDateTime.now();
+
+	    if (now.isBefore(dataOcorrencia)) {
+	        return "EM ABERTO";
+	    } else if (now.isAfter(dataOcorrencia) && now.isBefore(dataVisita)) {
+	        return "EM ANDAMENTO";
+	    } else {
+	        return "FINALIZADO";
+	    }
 	}
 }
