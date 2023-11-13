@@ -3,6 +3,7 @@ package br.gov.sp.fatec.resource;
 
 import java.util.List;
 
+import br.gov.sp.fatec.dto.LanceDTO;
 import br.gov.sp.fatec.entity.Lance;
 import br.gov.sp.fatec.service.LanceService;
 import jakarta.inject.Inject;
@@ -31,24 +32,22 @@ public class LanceResource {
 
 	@PUT
 	@Path("vincular-veiculo/{veiculoId}/{clienteId}")
-	public Response vincularLanceAoVeiculo(@PathParam("veiculoId") Long veiculoId,
-			@PathParam("clienteId") Long clienteId, Double valor) {
-		Lance lance = lanceService.vincularLanceAoVeiculo(veiculoId, clienteId, valor);
-		if (lance == null) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		}
-		return Response.status(Response.Status.OK).entity(lance).build();
+	public Response vincularLanceAoVeiculo(LanceDTO lanceDTO) {
+	    LanceDTO lance = lanceService.vincularLanceAoVeiculo(lanceDTO);
+	    if (lance == null) {
+	        return Response.status(Response.Status.BAD_REQUEST).build();
+	    }
+	    return Response.status(Response.Status.OK).entity(lance).build();
 	}
 
 	@PUT
 	@Path("vincular-dispositivo/{dispositivoId}/{clienteId}")
-	public Response vincularLanceAoDispositivo(@PathParam("dispositivoId") Long dispositivoId,
-			@PathParam("clienteId") Long clienteId, Double valor) {
-		Lance lance = lanceService.vincularLanceAoDispositivo(dispositivoId, clienteId, valor);
-		if (lance == null) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
-		}
-		return Response.status(Response.Status.OK).entity(lance).build();
+	public Response vincularLanceAoDispositivo(LanceDTO lanceDTO) {
+	    LanceDTO lance = lanceService.vincularLanceAoDispositivo(lanceDTO);
+	    if (lance == null) {
+	        return Response.status(Response.Status.BAD_REQUEST).build();
+	    }
+	    return Response.status(Response.Status.OK).entity(lance).build();
 	}
 
 	@GET
