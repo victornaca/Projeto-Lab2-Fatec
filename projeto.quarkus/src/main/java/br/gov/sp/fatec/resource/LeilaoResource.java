@@ -72,4 +72,14 @@ public class LeilaoResource {
 	public List<Leilao> listarLeiloesByDataOcorrencia(){
 		return leilaoService.listarLeiloesByDataOcorrencia();
 	}
+	
+	@GET
+    @Path("/detalharLeilao/{id}")
+    public Response detalharLeilao(@PathParam("id") Long id) {
+        LeilaoDTO leilaoDTO = leilaoService.detalharLeilao(id);
+        if (leilaoDTO == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(leilaoDTO).build();
+    }
 }

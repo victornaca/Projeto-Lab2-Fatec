@@ -1,6 +1,8 @@
 package br.gov.sp.fatec.entity;
 
+
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -25,9 +27,9 @@ public class Leilao extends PanacheEntityBase {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private Date dataOcorrencia;
+	private LocalDateTime dataOcorrencia;
 
-	private Date dataVisita;
+	private LocalDateTime dataVisita;
 
 	private String status;
 
