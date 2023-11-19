@@ -17,6 +17,8 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
@@ -132,5 +134,22 @@ public class VeiculoResource {
     public Response listarVeiculoAssociadoLeilao(@PathParam("leilaoId")Long leilaoId) {
     	Response veiculo = veiculoService.listarVeiculoAssociadoLeilao(leilaoId);
     	return veiculo;
+    }
+    
+    @GET
+    @Path("/{leilaoId}/veiculos")
+    public Response listarVeiculoAssociadoLeilao(@PathParam("leilaoId") Long leilaoId, @QueryParam("buscaNome") String buscaNome) {
+
+        if (leilaoId == null) {
+            throw new WebApplicationException("Leilão Nulo", Response.Status.NOT_FOUND);
+        }
+
+        List<VeiculoDTO> veiculoDTOs = veiculoService.listarVeiculosAssociadosLeilaoByNome(leilaoId, buscaNome);
+
+        if (veiculoDTOs.isEmpty()) {
+            throw new WebApplicationException("Veículos não encontrados para o Leilão informado", Response.Status.NOT_FOUND);
+        }
+
+        return Response.status(Response.Status.OK).entity(veiculoDTOs).build();
     }
 }

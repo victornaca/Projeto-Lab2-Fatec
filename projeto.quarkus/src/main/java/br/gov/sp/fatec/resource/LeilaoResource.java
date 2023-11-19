@@ -72,4 +72,6 @@ public class LeilaoResource {
 	public List<Leilao> listarLeiloesByDataOcorrencia(){
 		return leilaoService.listarLeiloesByDataOcorrencia();
 	}
+	
+	
 }
