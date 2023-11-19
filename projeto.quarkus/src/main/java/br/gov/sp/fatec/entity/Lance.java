@@ -1,6 +1,7 @@
 package br.gov.sp.fatec.entity;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.Date;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
@@ -22,7 +23,10 @@ public class Lance extends PanacheEntityBase {
 	
     private Date dataHora;
     
-    private Double valor;
+    private Double valorInicial;
+    
+    private Double valorAdicional;
+
     
     @ManyToOne
     @JoinColumn(name = "Dispositivoid") 

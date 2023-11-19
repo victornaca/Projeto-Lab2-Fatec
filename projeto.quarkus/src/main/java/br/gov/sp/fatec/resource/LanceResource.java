@@ -31,8 +31,11 @@ public class LanceResource {
 	}
 
 	@PUT
-	@Path("vincular-veiculo/{veiculoId}/{clienteId}")
-	public Response vincularLanceAoVeiculo(LanceDTO lanceDTO) {
+	@Path("vincular-veiculo")
+	public Response vincularLanceAoVeiculo(@QueryParam("veiculoId") Long veiculoId, @QueryParam("clienteId") Long clienteId, LanceDTO lanceDTO) {
+	    lanceDTO.setVeiculoId(veiculoId);
+	    lanceDTO.setClienteId(clienteId);
+
 	    LanceDTO lance = lanceService.vincularLanceAoVeiculo(lanceDTO);
 	    if (lance == null) {
 	        return Response.status(Response.Status.BAD_REQUEST).build();
@@ -41,15 +44,17 @@ public class LanceResource {
 	}
 
 	@PUT
-	@Path("vincular-dispositivo/{dispositivoId}/{clienteId}")
-	public Response vincularLanceAoDispositivo(LanceDTO lanceDTO) {
+	@Path("vincular-dispositivo")
+	public Response vincularLanceAoDispositivo(@QueryParam("dispositivoId") Long dispositivoId, @QueryParam("clienteId") Long clienteId, LanceDTO lanceDTO) {
+	    lanceDTO.setDispositivoId(dispositivoId);
+	    lanceDTO.setClienteId(clienteId);
+
 	    LanceDTO lance = lanceService.vincularLanceAoDispositivo(lanceDTO);
 	    if (lance == null) {
 	        return Response.status(Response.Status.BAD_REQUEST).build();
 	    }
 	    return Response.status(Response.Status.OK).entity(lance).build();
 	}
-
 	@GET
 	@Path("/lances-por-produto")
 	public List<Lance> buscarLancesPorTipo(@QueryParam("produto") Long produto) {
