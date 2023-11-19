@@ -9,24 +9,24 @@ INSERT INTO instituicaofinanceira (nome, cnpj) VALUES ('Banco C', '34567890123')
 
 
 -- Inserir o primeiro leilão
-INSERT INTO leilao (dataOcorrencia, dataVisita, status, endereco, cidade, estado)
-VALUES ('2023-10-10', '2023-10-15', 'Aberto', 'Endereço 1', 'Cidade 1', 'UF');
+INSERT INTO leilao (dataInicio, dataFim, dataVisitaInicio, dataVisitaFim, status, endereco, cidade, estado)
+VALUES ('2023-11-17 08:00:00', '2023-11-20 08:00:00', '2023-11-18 08:00:00', '2023-11-19 08:00:00', 'Aberto', 'Endereço 1', 'Cidade 1', 'UF');
 
 -- Vincular o primeiro leilão às instituições financeiras (Assumindo que as instituições financeiras têm IDs 1 e 2)
 INSERT INTO leilaoinstituicaofinanceira (instituicao_financeira_id, leilao_id)
 VALUES (1, 1), (2, 1);
 
 -- Inserir o segundo leilão
-INSERT INTO leilao (dataOcorrencia, dataVisita, status, endereco, cidade, estado)
-VALUES ('2023-11-10', '2023-11-15', 'Fechado', 'Endereço 2', 'Cidade 2', 'UF');
+INSERT INTO leilao (dataInicio, dataFim, dataVisitaInicio, dataVisitaFim, status, endereco, cidade, estado)
+VALUES ('2023-11-25 08:00:00', '2023-11-30 08:00:00', '2023-11-26 08:00:00', '2023-11-29 08:00:00', 'Fechado', 'Endereço 2', 'Cidade 2', 'UF');
 
 -- Vincular o segundo leilão às instituições financeiras (Assumindo que as instituições financeiras têm IDs 2 e 3)
 INSERT INTO leilaoinstituicaofinanceira (instituicao_financeira_id, leilao_id)
 VALUES (2, 2), (3, 2);
 
 -- Inserir o terceiro leilão
-INSERT INTO leilao (dataOcorrencia, dataVisita, status, endereco, cidade, estado)
-VALUES ('2023-12-10', '2023-12-15', 'Aberto', 'Endereço 3', 'Cidade 3', 'UF');
+INSERT INTO leilao (dataInicio, dataFim, dataVisitaInicio, dataVisitaFim, status, endereco, cidade, estado)
+VALUES ('2023-11-07 08:00:00', '2023-11-11 08:00:00', '2023-11-08 08:00:00', '2023-11-10 08:00:00','Finalizado', 'Endereço 3','Cidade 3', 'UF');
 
 -- Vincular o terceiro leilão às instituições financeiras (Assumindo que as instituições financeiras têm IDs 1 e 3)
 INSERT INTO leilaoinstituicaofinanceira (instituicao_financeira_id, leilao_id)
@@ -80,7 +80,7 @@ INSERT INTO cliente (nome, email) VALUES ('Cliente C', 'clienteC@email.com');
 
 
 -- Inserir o primeiro lance ligando a um Veículo (Assumindo que o Veículo tem ID 1 e o Cliente tem ID 1)
-INSERT INTO lance (dataHora, valor, Veidculoid, Clienteid) 
+INSERT INTO lance (dataHora, valor, Veiculoid, Clienteid) 
 VALUES ('2023-10-10 08:00:00', 1000.00, 1, 1);
 
 -- Inserir o segundo lance ligando a um Dispositivo de Informática (Assumindo que o Dispositivo tem ID 2 e o Cliente tem ID 2)
@@ -88,5 +88,5 @@ INSERT INTO lance (dataHora, valor, Dispositivoid, Clienteid)
 VALUES ('2023-10-11 09:30:00', 800.00, 2, 2);
 
 -- Inserir o terceiro lance ligando a um Veículo (Assumindo que o Veículo tem ID 3 e o Cliente tem ID 3)
-INSERT INTO lance (dataHora, valor, Veidculoid, Clienteid) 
+INSERT INTO lance (dataHora, valor, Veiculoid, Clienteid) 
 VALUES ('2023-10-12 10:45:00', 1200.00, 3, 3);

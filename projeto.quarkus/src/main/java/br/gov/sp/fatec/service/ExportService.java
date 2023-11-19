@@ -28,7 +28,7 @@ public class ExportService {
     public void exportarDetalhesLeiloesParaDET() {
         String nomeArquivo = "leiloes.DET";
 
-        List<Leilao> leiloes = leilaoService.listarLeiloesByDataOcorrencia();
+        List<Leilao> leiloes = leilaoService.listarLeiloesByDataInicio();
 
         EntityExporter.exportarDetalhesParaDET(leiloes, nomeArquivo);
     }

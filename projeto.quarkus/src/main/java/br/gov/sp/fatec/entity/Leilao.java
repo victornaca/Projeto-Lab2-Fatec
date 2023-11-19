@@ -1,12 +1,12 @@
 package br.gov.sp.fatec.entity;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import br.gov.sp.fatec.dto.LeilaoDTO;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import jakarta.ejb.PrePassivate;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,6 +15,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PreUpdate;
 import lombok.Data;
 
 @Data
@@ -25,9 +26,13 @@ public class Leilao extends PanacheEntityBase {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private Date dataOcorrencia;
+	private LocalDateTime dataInicio;
 
-	private Date dataVisita;
+	private LocalDateTime dataFim;
+	
+	private LocalDateTime dataVisitaInicio;
+	
+	private LocalDateTime dataVisitaFim;
 
 	private String status;
 
@@ -41,4 +46,18 @@ public class Leilao extends PanacheEntityBase {
 	@OneToMany(mappedBy = "leilao", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	@JsonManagedReference
     private List<LeilaoInstituicaoFinanceira> leilaoInstituicoes;
+	
+	@PreUpdate
+	@PrePassivate
+    public void definirStatusComBaseNoHorario() {
+        LocalDateTime agora = LocalDateTime.now();
+
+        if (agora.isBefore(dataInicio)) {
+            status = "Fechado";
+        } else if (agora.isAfter(dataFim)) {
+            status = "Finalizado";
+        } else {
+            status = "Aberto";
+        }
+    }
 }

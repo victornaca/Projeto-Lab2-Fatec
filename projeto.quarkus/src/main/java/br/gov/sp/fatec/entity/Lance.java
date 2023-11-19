@@ -33,7 +33,7 @@ public class Lance extends PanacheEntityBase {
     private Cliente cliente;
     
     @ManyToOne
-    @JoinColumn(name = "Veidculoid") 
+    @JoinColumn(name = "Veiculoid") 
     private Veiculo veiculo;
 
 }
