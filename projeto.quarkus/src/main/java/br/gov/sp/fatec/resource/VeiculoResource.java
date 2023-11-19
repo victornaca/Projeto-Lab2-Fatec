@@ -127,11 +127,4 @@ public class VeiculoResource {
     	Response veiculo = veiculoService.listarVeiculoAssociadoLeilao(leilaoId);
     	return veiculo;
     }
-    
-    @GET
-    @Path("/{leilaoId}/veiculos")
-    public Response listarVeiculoAssociadoLeilaoByNome(@PathParam("leilaoId") Long leilaoId, @QueryParam("buscaNome") String buscaNome) {
-    	Response veiculo = veiculoService.listarVeiculosAssociadosLeilaoByNome(leilaoId,buscaNome);
-    	return veiculo;
-    }
 }

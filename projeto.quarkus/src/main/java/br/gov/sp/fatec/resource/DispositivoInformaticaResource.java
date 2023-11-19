@@ -136,11 +136,4 @@ public class DispositivoInformaticaResource {
     	Response dispositivo =  dispositivoInformaticaService.listarDispositivoAssociadoLeilao(leilaoId);
     	return dispositivo;
     }
-    
-    @GET
-    @Path("/{leilaoId}/dispositivos")
-    public Response listarDispositivosAssociadosLeilaoByNome(@PathParam("leilaoId") Long leilaoId, @QueryParam("buscaNome") String buscaNome) {
-    	Response dispositivo =  dispositivoInformaticaService.listarDispositivosAssociadosLeilaoByNome(leilaoId, buscaNome);
-    	return dispositivo;
-    }
 }

@@ -2,9 +2,11 @@ package br.gov.sp.fatec.resource;
 
 import java.util.List;
 
+import br.gov.sp.fatec.dto.DetalhesLeilaoDTO;
 import br.gov.sp.fatec.dto.LeilaoDTO;
 import br.gov.sp.fatec.dto.VeiculoDTO;
 import br.gov.sp.fatec.entity.Lance;
+
 import br.gov.sp.fatec.entity.Leilao;
 import br.gov.sp.fatec.service.LeilaoService;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
@@ -53,6 +55,18 @@ public class LeilaoResource {
 	public Leilao listarLeilaoId(@PathParam("id") Long id) {
 		return leilaoService.listarLeilaoId(id);
 	}
+	
+	@GET
+    @Path("/detalhes/{id}")
+    public DetalhesLeilaoDTO obterDetalhesLeilao(@PathParam("id") Long id) {
+        return leilaoService.obterDetalhesLeilao(id);
+    }
+	
+	@GET
+    @Path("/get-by-nome/{id}/nomeProduto")
+    public DetalhesLeilaoDTO obterDetalhesLeilao(@PathParam("id") Long id, @QueryParam("buscaNome") String buscaNome) {
+        return leilaoService.obterDetalhesLeilao(id);
+    }
 
 	@PUT
 	@Path("{id}")
@@ -74,8 +88,8 @@ public class LeilaoResource {
 
 	@GET
 	@Path("/pordataocorrencia")
-	public List<Leilao> listarLeiloesByDataOcorrencia() {
-		return leilaoService.listarLeiloesByDataOcorrencia();
+	public List<Leilao> listarLeiloesByDataInicio(){
+		return leilaoService.listarLeiloesByDataInicio();
 	}
 
 	@GET

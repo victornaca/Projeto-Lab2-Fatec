@@ -13,12 +13,10 @@ import java.util.stream.Stream;
 
 import org.modelmapper.ModelMapper;
 
+import br.gov.sp.fatec.dto.DetalhesLeilaoDTO;
 import br.gov.sp.fatec.dto.DispositivoInformaticaDTO;
-import br.gov.sp.fatec.dto.InstituicaoFinanceiraDTO;
 import br.gov.sp.fatec.dto.LeilaoDTO;
-import br.gov.sp.fatec.dto.ProdutoDTO;
 import br.gov.sp.fatec.dto.VeiculoDTO;
-import br.gov.sp.fatec.entity.DispositivoInformatica;
 import br.gov.sp.fatec.entity.InstituicaoFinanceira;
 import br.gov.sp.fatec.entity.Lance;
 import br.gov.sp.fatec.entity.Leilao;
@@ -32,6 +30,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.core.Response;
 
 @ApplicationScoped
 public class LeilaoService implements PanacheRepositoryBase<Leilao, Long> {
@@ -48,32 +47,35 @@ public class LeilaoService implements PanacheRepositoryBase<Leilao, Long> {
 	@Transactional
 	public LeilaoDTO cadastrarLeilao(LeilaoDTO leilaoDTO) {
 		Leilao leilao = modelMapper.map(leilaoDTO, Leilao.class);
+		
+		leilaoDTO.setStatus(null);
+		
+        if (leilaoDTO.getLeilaoInstituicaoIds() == null || leilaoDTO.getLeilaoInstituicaoIds().isEmpty()) {
+            throw new IllegalArgumentException("Pelo menos uma instituição financeira deve ser informada.");
+        }
 
-		if (leilaoDTO.getLeilaoInstituicao() == null || leilaoDTO.getLeilaoInstituicao().isEmpty()) {
-			throw new IllegalArgumentException("Pelo menos uma instituição financeira deve ser informada.");
-		}
+        List<InstituicaoFinanceira> instituicoes = new ArrayList<>();
+        for (Long instituicaoId : leilaoDTO.getLeilaoInstituicaoIds()) {
+            InstituicaoFinanceira instituicao = InstituicaoFinanceira.findById(instituicaoId);
+            if (instituicao != null) {
+                instituicoes.add(instituicao);
+            } else {
+                throw new IllegalArgumentException("Instituição financeira com ID " + instituicaoId + " não encontrada.");
+            }
+        }
 
-		List<InstituicaoFinanceira> instituicoes = new ArrayList<>();
-		for (Long instituicaoId : leilaoDTO.getLeilaoInstituicaoid()) {
-			InstituicaoFinanceira instituicao = InstituicaoFinanceira.findById(instituicaoId);
-			if (instituicao != null) {
-				instituicoes.add(instituicao);
-			} else {
-				throw new IllegalArgumentException(
-						"Instituição financeira com ID " + instituicaoId + " não encontrada.");
-			}
-		}
+        leilao.setLeilaoInstituicoes(new ArrayList<>());
+        for (InstituicaoFinanceira instituicao : instituicoes) {
+            LeilaoInstituicaoFinanceira relacao = new LeilaoInstituicaoFinanceira();
+            relacao.setInstituicaoFinanceira(instituicao);
+            relacao.setLeilao(leilao);
+            leilao.getLeilaoInstituicoes().add(relacao);
+        }
+        
+        leilao.definirStatusComBaseNoHorario();
 
-		leilao.setLeilaoInstituicoes(new ArrayList<>());
-		for (InstituicaoFinanceira instituicao : instituicoes) {
-			LeilaoInstituicaoFinanceira relacao = new LeilaoInstituicaoFinanceira();
-			relacao.setInstituicaoFinanceira(instituicao);
-			relacao.setLeilao(leilao);
-			leilao.getLeilaoInstituicoes().add(relacao);
-		}
-
-		leilao.persist();
-		return modelMapper.map(leilao, LeilaoDTO.class);
+        leilao.persist();
+        return modelMapper.map(leilao, LeilaoDTO.class);
 	}
 
 	public List<Leilao> listarLeiloes() {
@@ -100,9 +102,9 @@ public class LeilaoService implements PanacheRepositoryBase<Leilao, Long> {
 	public void deletarLeilao(Long id, Leilao leilao) {
 		Leilao.deleteById(id);
 	}
-
-	public List<Leilao> listarLeiloesByDataOcorrencia() {
-		return Leilao.listAll(Sort.by("dataOcorrencia"));
+	
+	public List<Leilao> listarLeiloesByDataInicio() {
+		return Leilao.listAll(Sort.by("dataInicio"));
 	}
 
 	@Transactional
@@ -201,6 +203,75 @@ public class LeilaoService implements PanacheRepositoryBase<Leilao, Long> {
 
 }
 	
+	@Inject
+	VeiculoService veiculoService;
+	
+	@Inject
+	DispositivoInformaticaService dispositivoInformaticaService;
+	
+	@Transactional
+    public DetalhesLeilaoDTO ProdutosDeLeilaoByNome(Long leilaoId, String buscaNome) {
+        Leilao leilao = Leilao.findById(leilaoId);
+
+        if (leilao == null) {
+            return null;
+        }
+
+        DetalhesLeilaoDTO detalhesLeilaoDTO = new DetalhesLeilaoDTO();
+        detalhesLeilaoDTO.setId(leilaoId);
+        detalhesLeilaoDTO.setDataInicio(leilao.getDataInicio());
+        detalhesLeilaoDTO.setDataFim(leilao.getDataFim());
+        detalhesLeilaoDTO.setStatus(leilao.getStatus());
+        detalhesLeilaoDTO.setEndereco(leilao.getEndereco());
+        detalhesLeilaoDTO.setCidade(leilao.getCidade());
+        detalhesLeilaoDTO.setEstado(leilao.getEstado());
+
+        Response responseVeiculos = veiculoService.listarVeiculosAssociadosLeilaoByNome(leilaoId, buscaNome);
+        if (responseVeiculos.getStatus() == Response.Status.OK.getStatusCode()) {
+            List<VeiculoDTO> veiculos = (List<VeiculoDTO>) responseVeiculos.getEntity();
+            detalhesLeilaoDTO.setVeiculos(veiculos);
+        }
+        
+        Response responseDispositivo = dispositivoInformaticaService.listarDispositivosAssociadosLeilaoByNome(leilaoId, buscaNome);
+        if (responseDispositivo.getStatus() == Response.Status.OK.getStatusCode()) {
+            List<DispositivoInformaticaDTO> dispositivo = (List<DispositivoInformaticaDTO>) responseDispositivo.getEntity();
+            detalhesLeilaoDTO.setDispositivosInformatica(dispositivo);
+        }
+        
+        return detalhesLeilaoDTO;
+    }
+	
+	@Transactional
+    public DetalhesLeilaoDTO obterDetalhesLeilao(Long leilaoId) {
+        Leilao leilao = Leilao.findById(leilaoId);
+
+        if (leilao == null) {
+            return null;
+        }
+
+        DetalhesLeilaoDTO detalhesLeilaoDTO = new DetalhesLeilaoDTO();
+        detalhesLeilaoDTO.setId(leilaoId);
+        detalhesLeilaoDTO.setDataInicio(leilao.getDataInicio());
+        detalhesLeilaoDTO.setDataFim(leilao.getDataFim());
+        detalhesLeilaoDTO.setStatus(leilao.getStatus());
+        detalhesLeilaoDTO.setEndereco(leilao.getEndereco());
+        detalhesLeilaoDTO.setCidade(leilao.getCidade());
+        detalhesLeilaoDTO.setEstado(leilao.getEstado());
+
+        Response responseVeiculos = veiculoService.listarVeiculoAssociadoLeilao(leilaoId);
+        if (responseVeiculos.getStatus() == Response.Status.OK.getStatusCode()) {
+            List<VeiculoDTO> veiculos = (List<VeiculoDTO>) responseVeiculos.getEntity();
+            detalhesLeilaoDTO.setVeiculos(veiculos);
+        }
+        
+        Response responseDispositivo = dispositivoInformaticaService.listarDispositivoAssociadoLeilao(leilaoId);
+        if (responseDispositivo.getStatus() == Response.Status.OK.getStatusCode()) {
+            List<DispositivoInformaticaDTO> dispositivo = (List<DispositivoInformaticaDTO>) responseDispositivo.getEntity();
+            detalhesLeilaoDTO.setDispositivosInformatica(dispositivo);
+        }
+        
+        return detalhesLeilaoDTO;
+    }
 	
 }
 
