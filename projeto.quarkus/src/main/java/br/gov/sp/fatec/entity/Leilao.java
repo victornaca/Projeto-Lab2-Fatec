@@ -1,10 +1,14 @@
 package br.gov.sp.fatec.entity;
 
+
 import java.sql.Date;
+import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import br.gov.sp.fatec.dto.InstituicaoFinanceiraDTO;
 import br.gov.sp.fatec.dto.LeilaoDTO;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.CascadeType;
@@ -25,9 +29,9 @@ public class Leilao extends PanacheEntityBase {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private Date dataOcorrencia;
+	private LocalDateTime dataOcorrencia;
 
-	private Date dataVisita;
+	private LocalDateTime dataVisita;
 
 	private String status;
 
@@ -41,4 +45,7 @@ public class Leilao extends PanacheEntityBase {
 	@OneToMany(mappedBy = "leilao", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	@JsonManagedReference
     private List<LeilaoInstituicaoFinanceira> leilaoInstituicoes;
+	
+	
+
 }

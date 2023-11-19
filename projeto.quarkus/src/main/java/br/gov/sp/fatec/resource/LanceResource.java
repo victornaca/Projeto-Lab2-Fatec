@@ -9,6 +9,7 @@ import br.gov.sp.fatec.service.LanceService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
@@ -30,9 +31,12 @@ public class LanceResource {
 		return lanceService.listarLances();
 	}
 
-	@PUT
-	@Path("vincular-veiculo/{veiculoId}/{clienteId}")
-	public Response vincularLanceAoVeiculo(LanceDTO lanceDTO) {
+	@POST
+	@Path("vincular-veiculo")
+	public Response vincularLanceAoVeiculo(@QueryParam("veiculoId") Long veiculoId, @QueryParam("clienteId") Long clienteId, LanceDTO lanceDTO) {
+	    lanceDTO.setVeiculoId(veiculoId);
+	    lanceDTO.setClienteId(clienteId);
+
 	    LanceDTO lance = lanceService.vincularLanceAoVeiculo(lanceDTO);
 	    if (lance == null) {
 	        return Response.status(Response.Status.BAD_REQUEST).build();
@@ -40,16 +44,18 @@ public class LanceResource {
 	    return Response.status(Response.Status.OK).entity(lance).build();
 	}
 
-	@PUT
-	@Path("vincular-dispositivo/{dispositivoId}/{clienteId}")
-	public Response vincularLanceAoDispositivo(LanceDTO lanceDTO) {
+	@POST
+	@Path("vincular-dispositivo")
+	public Response vincularLanceAoDispositivo(@QueryParam("dispositivoId") Long dispositivoId, @QueryParam("clienteId") Long clienteId, LanceDTO lanceDTO) {
+	    lanceDTO.setDispositivoId(dispositivoId);
+	    lanceDTO.setClienteId(clienteId);
+
 	    LanceDTO lance = lanceService.vincularLanceAoDispositivo(lanceDTO);
 	    if (lance == null) {
 	        return Response.status(Response.Status.BAD_REQUEST).build();
 	    }
 	    return Response.status(Response.Status.OK).entity(lance).build();
 	}
-
 	@GET
 	@Path("/lances-por-produto")
 	public List<Lance> buscarLancesPorTipo(@QueryParam("produto") Long produto) {
