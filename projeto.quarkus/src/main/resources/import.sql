@@ -80,13 +80,13 @@ INSERT INTO cliente (nome, email) VALUES ('Cliente C', 'clienteC@email.com');
 
 
 -- Inserir o primeiro lance ligando a um Veículo (Assumindo que o Veículo tem ID 1 e o Cliente tem ID 1)
-INSERT INTO lance (dataHora, valor, Veiculoid, Clienteid) 
-VALUES ('2023-10-10 08:00:00', 1000.00, 1, 1);
+INSERT INTO lance (dataHora, valorInicial, ValorAdicional, Veidculoid, Clienteid) 
+VALUES ('2023-10-10 08:00:00', 1000.00, 200.00, 1, 1);
 
 -- Inserir o segundo lance ligando a um Dispositivo de Informática (Assumindo que o Dispositivo tem ID 2 e o Cliente tem ID 2)
-INSERT INTO lance (dataHora, valor, Dispositivoid, Clienteid) 
-VALUES ('2023-10-11 09:30:00', 800.00, 2, 2);
+INSERT INTO lance (dataHora, valorInicial, ValorAdicional, Dispositivoid, Clienteid) 
+VALUES ('2023-10-11 09:30:00', 800.00, 200.00, 2, 2);
 
 -- Inserir o terceiro lance ligando a um Veículo (Assumindo que o Veículo tem ID 3 e o Cliente tem ID 3)
-INSERT INTO lance (dataHora, valor, Veiculoid, Clienteid) 
-VALUES ('2023-10-12 10:45:00', 1200.00, 3, 3);
+INSERT INTO lance (dataHora, valorInicial, ValorAdicional, Veidculoid, Clienteid) 
+VALUES ('2023-10-12 10:45:00', 1200.00, 200.00, 3, 3);

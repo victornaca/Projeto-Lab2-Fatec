@@ -38,6 +38,8 @@ public abstract class Veiculo extends PanacheEntityBase{
     @JoinColumn(name = "leilaoId")
     private Leilao leilao;
     
+ 
+    
     public Veiculo() {
     }
     

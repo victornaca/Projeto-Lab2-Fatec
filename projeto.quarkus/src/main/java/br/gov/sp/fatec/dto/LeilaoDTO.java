@@ -1,10 +1,12 @@
 package br.gov.sp.fatec.dto;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.validation.constraints.Size;
+
 import lombok.Data;
 
 @Data
@@ -23,6 +25,9 @@ public class LeilaoDTO {
 	private String cidade;
     @Size(max = 2)
 	private String estado;
-	private List<Long> leilaoInstituicaoIds;
+	private List<Long> leilaoInstituicaoid;
+	private List<InstituicaoFinanceiraDTO> leilaoInstituicao;
+	private List<DispositivoInformaticaDTO> dispositivos;
+	private List<VeiculoDTO> veiculos;
 
 }

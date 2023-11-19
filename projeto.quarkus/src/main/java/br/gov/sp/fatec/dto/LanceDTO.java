@@ -7,9 +7,10 @@ import lombok.Data;
 @Data
 public class LanceDTO {
 
-    private Long veiculoId;
-    private Long dispositivoId;
-    private Long clienteId;
-    private Double valor;
+	private Long veiculoId;
+	private Long dispositivoId;
+	private Long clienteId;
+	private Double valorInicial;
+	private Double valorAdicional;
 
 }

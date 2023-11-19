@@ -1,10 +1,11 @@
 package br.gov.sp.fatec.entity;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-
+import br.gov.sp.fatec.dto.InstituicaoFinanceiraDTO;
+import br.gov.sp.fatec.dto.LeilaoDTO;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.ejb.PrePassivate;
 import jakarta.persistence.CascadeType;
