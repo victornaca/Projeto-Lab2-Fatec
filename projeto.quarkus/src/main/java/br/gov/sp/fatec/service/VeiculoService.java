@@ -14,6 +14,7 @@ import br.gov.sp.fatec.entity.Carro;
 import br.gov.sp.fatec.entity.Leilao;
 import br.gov.sp.fatec.entity.Motocicleta;
 import br.gov.sp.fatec.entity.Veiculo;
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.WebApplicationException;
@@ -140,4 +141,20 @@ public class VeiculoService {
 
 	    return Response.status(Response.Status.OK).entity(veiculoDTOs).build();
 	}
+	
+    @Transactional
+    public List<VeiculoDTO> listarVeiculosAssociadosLeilaoByNome(Long leilaoId, String buscaNome) {
+        List<Veiculo> veiculos;
+
+        if (buscaNome != null && !buscaNome.trim().isEmpty()) {
+            veiculos = Veiculo.list("leilao.id = ?1 and (marca like ?2 or modelo like ?2)",
+                    Sort.by("id"), leilaoId, "%" + buscaNome + "%");
+        } else {
+            veiculos = Veiculo.list("leilao.id", Sort.by("id"), leilaoId);
+        }
+
+        return veiculos.stream()
+                .map(veiculo -> modelMapper.map(veiculo, VeiculoDTO.class))
+                .collect(Collectors.toList());
+    }
 }

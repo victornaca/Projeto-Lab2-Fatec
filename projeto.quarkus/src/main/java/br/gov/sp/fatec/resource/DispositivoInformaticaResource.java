@@ -18,6 +18,8 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
@@ -150,5 +152,26 @@ public class DispositivoInformaticaResource {
     public Response listarDispositivoAssociadoLeilao(@PathParam("leilaoId")Long leilaoId) {
     	Response dispositivo =  dispositivoInformaticaService.listarDispositivoAssociadoLeilao(leilaoId);
     	return dispositivo;
+    }
+    
+    @GET
+    @Path("/{leilaoId}/dispositivos-informatica")
+    public Response listarDispositivosInformaticaAssociadosLeilaoByNome(
+            @PathParam("leilaoId") Long leilaoId,
+            @QueryParam("buscaNome") String buscaNome) {
+
+        if (leilaoId == null) {
+            throw new WebApplicationException("Leilão Nulo", Response.Status.NOT_FOUND);
+        }
+
+        List<DispositivoInformaticaDTO> dispositivoInformaticaDTOs =
+                dispositivoInformaticaService.listarDispositivosInformaticaAssociadosLeilaoByNome(leilaoId, buscaNome);
+
+        if (dispositivoInformaticaDTOs.isEmpty()) {
+            throw new WebApplicationException("Dispositivos de Informática não encontrados para o Leilão informado",
+                    Response.Status.NOT_FOUND);
+        }
+
+        return Response.status(Response.Status.OK).entity(dispositivoInformaticaDTOs).build();
     }
 }

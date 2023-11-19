@@ -16,6 +16,7 @@ import br.gov.sp.fatec.entity.Leilao;
 import br.gov.sp.fatec.entity.Monitor;
 import br.gov.sp.fatec.entity.Notebook;
 import br.gov.sp.fatec.entity.Tablet;
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.WebApplicationException;
@@ -162,4 +163,20 @@ public class DispositivoInformaticaService {
         
 		return Response.status(Response.Status.OK).entity(dispositivoDTOs).build();
 	}
+	
+    @Transactional
+    public List<DispositivoInformaticaDTO> listarDispositivosInformaticaAssociadosLeilaoByNome(Long leilaoId, String buscaNome) {
+        List<DispositivoInformatica> dispositivos;
+
+        if (buscaNome != null && !buscaNome.trim().isEmpty()) {
+            dispositivos = DispositivoInformatica.list("leilao.id = ?1 and (tipo like ?2 or modelo like ?2)",
+                    Sort.by("id"), leilaoId, "%" + buscaNome + "%");
+        } else {
+            dispositivos = DispositivoInformatica.list("leilao.id", Sort.by("id"), leilaoId);
+        }
+
+        return dispositivos.stream()
+                .map(dispositivo -> modelMapper.map(dispositivo, DispositivoInformaticaDTO.class))
+                .collect(Collectors.toList());
+    }
 }

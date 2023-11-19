@@ -81,4 +81,6 @@ public class LeilaoService {
 	public List<Leilao> listarLeiloesByDataOcorrencia() {
 		return Leilao.listAll(Sort.by("dataOcorrencia"));
 	}
+	
+	
 }
