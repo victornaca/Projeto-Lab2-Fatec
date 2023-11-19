@@ -18,5 +18,6 @@ public class InstituicaoFinanceiraDTO {
 	        dto.setCnpj(instituicao.getCnpj());
 	        return dto;
 	    }
+
 	
 }

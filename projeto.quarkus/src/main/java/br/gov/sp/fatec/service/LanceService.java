@@ -33,6 +33,7 @@ public class LanceService {
 	public List<Lance> listarLances() {
 		return Lance.listAll();
 	}
+	
 	@Transactional
 	public LanceDTO vincularLanceAoVeiculo(LanceDTO lanceDTO) {
 	    Veiculo veiculo = Veiculo.findById(lanceDTO.getVeiculoId());

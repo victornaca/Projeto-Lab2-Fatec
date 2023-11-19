@@ -1,23 +1,36 @@
 package br.gov.sp.fatec.service;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.modelmapper.ModelMapper;
 
+import br.gov.sp.fatec.dto.DispositivoInformaticaDTO;
 import br.gov.sp.fatec.dto.InstituicaoFinanceiraDTO;
 import br.gov.sp.fatec.dto.LeilaoDTO;
+import br.gov.sp.fatec.dto.ProdutoDTO;
+import br.gov.sp.fatec.dto.VeiculoDTO;
 import br.gov.sp.fatec.entity.DispositivoInformatica;
 import br.gov.sp.fatec.entity.InstituicaoFinanceira;
+import br.gov.sp.fatec.entity.Lance;
 import br.gov.sp.fatec.entity.Leilao;
 import br.gov.sp.fatec.entity.LeilaoInstituicaoFinanceira;
 import br.gov.sp.fatec.entity.Veiculo;
+import io.quarkus.panache.common.Parameters;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 
 @ApplicationScoped
@@ -28,6 +41,9 @@ public class LeilaoService implements PanacheRepositoryBase<Leilao, Long> {
 	public LeilaoService() {
 		this.modelMapper = new ModelMapper();
 	}
+
+	@Inject
+	private EntityManager em;
 
 	@Transactional
 	public LeilaoDTO cadastrarLeilao(LeilaoDTO leilaoDTO) {
@@ -137,7 +153,7 @@ public class LeilaoService implements PanacheRepositoryBase<Leilao, Long> {
 				.collect(Collectors.toList());
 
 		leilaoDTO.setLeilaoInstituicao(instituicoesDTO);
-		
+
 		List<DispositivoInformatica> dispositivos = DispositivoInformatica.list("leilao", leilao);
 		leilaoDTO
 				.setDispositivos(dispositivos.stream().map(DispositivoInformatica::toDTO).collect(Collectors.toList()));
@@ -148,4 +164,39 @@ public class LeilaoService implements PanacheRepositoryBase<Leilao, Long> {
 		return leilaoDTO;
 
 	}
+
+	@Transactional
+	public List<Object> filtrarProdutosPorFaixaDeValores(Long leilaoId, Double valorMin, Double valorMax) {
+		Leilao leilao = Leilao.findById(leilaoId);
+
+		if (leilao != null) {
+			List<Lance> lances = Lance.find("valorInicial >= ?1 and valorInicial <= ?2", valorMin, valorMax).list();
+
+			List<Object> produtos = lances.stream().filter(lance -> lance.getVeiculo() != null)
+					.flatMap(lance -> Stream.of(lance.getVeiculo(), lance.getDispositivo())).filter(Objects::nonNull)
+					.distinct().collect(Collectors.toList());
+
+			return produtos;
+		}
+
+		return Collections.emptyList();
+	}
+
+	@Transactional
+	public List<Object> filtrarProdutosPorFaixaDeValoresAdicionais(Long leilaoId, Double valorMin, Double valorMax) {
+		Leilao leilao = Leilao.findById(leilaoId);
+
+		if (leilao != null) {
+			List<Lance> lances = Lance.find("valorInicial >= ?1 and valorAdicional <= ?2", valorMin, valorMax).list();
+
+			List<Object> produtos = lances.stream().filter(lance -> lance.getVeiculo() != null)
+					.flatMap(lance -> Stream.of(lance.getVeiculo(), lance.getDispositivo())).filter(Objects::nonNull)
+					.distinct().collect(Collectors.toList());
+
+			return produtos;
+		}
+
+		return Collections.emptyList();
+	}
+
 }

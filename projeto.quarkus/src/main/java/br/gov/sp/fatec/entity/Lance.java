@@ -40,4 +40,8 @@ public class Lance extends PanacheEntityBase {
     @JoinColumn(name = "Veidculoid") 
     private Veiculo veiculo;
 
+    public Veiculo getVeiculo() {
+        return veiculo;
+    }
+
 }
