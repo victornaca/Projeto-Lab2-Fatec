@@ -7,8 +7,15 @@ import br.gov.sp.fatec.dto.DispositivoInformaticaDTO;
 import br.gov.sp.fatec.dto.MonitorDTO;
 import br.gov.sp.fatec.dto.NotebookDTO;
 import br.gov.sp.fatec.dto.TabletDTO;
+import br.gov.sp.fatec.dto.VeiculoDTO;
+import br.gov.sp.fatec.entity.Carro;
+import br.gov.sp.fatec.entity.Celular;
 import br.gov.sp.fatec.entity.DispositivoInformatica;
+import br.gov.sp.fatec.entity.Monitor;
+import br.gov.sp.fatec.entity.Notebook;
+import br.gov.sp.fatec.entity.Tablet;
 import br.gov.sp.fatec.service.DispositivoInformaticaService;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -44,8 +51,7 @@ public class DispositivoInformaticaResource {
 
 	@DELETE
 	@Path("{id}")
-	public Response deletarDispositivoInformatica(@PathParam("id") Long id,
-			DispositivoInformatica dispositivoInformatica) {
+	public Response deletarDispositivoInformatica(@PathParam("id") Long id, DispositivoInformatica dispositivoInformatica) {
 		dispositivoInformaticaService.deletarDispositivoInformatica(id, dispositivoInformatica);
 		return Response.noContent().build();
 	}
@@ -53,91 +59,68 @@ public class DispositivoInformaticaResource {
 	@POST
 	@Path("/cadastrar-celular")
 	public Response cadastrarCelular(CelularDTO celularDTO) {
-		DispositivoInformaticaDTO celularCriadoDTO = dispositivoInformaticaService.cadastrarCelular(celularDTO);
-		if (celularCriadoDTO != null) {
-            return Response.status(Response.Status.CREATED).entity(celularCriadoDTO).build();
-        } else {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }	
+		return cadastrarDispositivo(celularDTO, Celular.class);
 	}
 
 	@POST
 	@Path("/cadastrar-monitor")
 	public Response cadastrarMonitor(MonitorDTO monitorDTO) {
-		DispositivoInformaticaDTO monitorCriadoDTO = dispositivoInformaticaService.cadastrarMonitor(monitorDTO);
-		if (monitorCriadoDTO != null) {
-            return Response.status(Response.Status.CREATED).entity(monitorCriadoDTO).build();
-        } else {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }	
+		return cadastrarDispositivo(monitorDTO, Monitor.class);
 	}
 
 	@POST
 	@Path("/cadastrar-notebook")
 	public Response cadastrarNotebook(NotebookDTO notebookDTO) {
-		DispositivoInformaticaDTO notebookCriadoDTO = dispositivoInformaticaService.cadastrarNotebook(notebookDTO);
-		if (notebookCriadoDTO != null) {
-            return Response.status(Response.Status.CREATED).entity(notebookCriadoDTO).build();
-        } else {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }	
+		return cadastrarDispositivo(notebookDTO, Notebook.class);
 	}
 
 	@POST
 	@Path("/cadastrar-tablet")
 	public Response cadastrarTablet(TabletDTO tabletDTO) {
-		DispositivoInformaticaDTO tabletCriadoDTO = dispositivoInformaticaService.cadastrarTablet(tabletDTO);
-		if (tabletCriadoDTO != null) {
-            return Response.status(Response.Status.CREATED).entity(tabletCriadoDTO).build();
+		return cadastrarDispositivo(tabletDTO, Tablet.class);
+	}
+	
+	private Response cadastrarDispositivo(DispositivoInformaticaDTO dispositivoInformaticaDTO, Class<? extends PanacheEntityBase> entityClass) {
+		DispositivoInformaticaDTO dispostivoCriadoDTO = dispositivoInformaticaService.cadastrarDispositivo(dispositivoInformaticaDTO, entityClass);
+        if (dispostivoCriadoDTO != null) {
+            return Response.status(Response.Status.CREATED).entity(dispostivoCriadoDTO).build();
         } else {
             return Response.status(Response.Status.BAD_REQUEST).build();
-        }	
-	}
+        }
+    }
 
 	@PUT
 	@Path("/atualizar-celular/{id}")
 	public Response atualizarCelular(@PathParam("id") Long id, CelularDTO celularDTO) {
-		DispositivoInformaticaDTO celular = dispositivoInformaticaService.atualizarCelular(id,celularDTO);
-    	if (celular != null) {
-            return Response.ok(celular).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
+		return atualizarDispositivo(id, celularDTO, Celular.class);
     }
 
 	@PUT
 	@Path("/atualizar-monitor/{id}")
 	public Response atualizarMonitor(@PathParam("id") Long id, MonitorDTO monitorDTO) {
-		DispositivoInformaticaDTO monitor = dispositivoInformaticaService.atualizarMonitor(id,monitorDTO);
-    	if (monitor != null) {
-            return Response.ok(monitor).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
+		return atualizarDispositivo(id, monitorDTO, Monitor.class);
     }
 
 	@PUT
 	@Path("/atualizar-notebook/{id}")
 	public Response atualizarNotebook(@PathParam("id") Long id, NotebookDTO notebookDTO) {
-		DispositivoInformaticaDTO notebook = dispositivoInformaticaService.atualizarNotebook(id,notebookDTO);
-    	if (notebook != null) {
-            return Response.ok(notebook).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
+		return atualizarDispositivo(id, notebookDTO, Notebook.class);
     }
 
 	@PUT
 	@Path("/atualizar-tablet/{id}")
 	public Response atualizarTablet(@PathParam("id") Long id, TabletDTO tabletDTO) {
-		DispositivoInformaticaDTO tablet = dispositivoInformaticaService.atualizarTablet(id,tabletDTO);
-    	if (tablet != null) {
-            return Response.ok(tablet).build();
+		return atualizarDispositivo(id, tabletDTO, Tablet.class);
+    }
+
+	private Response atualizarDispositivo(Long id, DispositivoInformaticaDTO dispositivoInformaticaDTO, Class<? extends PanacheEntityBase> entityClass) {
+		DispositivoInformaticaDTO dispositvoAtualizadoDTO = dispositivoInformaticaService.atualizarDispositivo(id, dispositivoInformaticaDTO, entityClass);
+        if (dispositvoAtualizadoDTO != null) {
+            return Response.ok(dispositvoAtualizadoDTO).build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
-
 
 	@PUT
 	@Path("vincular-dispositivo/{dispositivoId}/{leilaoId}")
@@ -155,23 +138,9 @@ public class DispositivoInformaticaResource {
     }
     
     @GET
-    @Path("/{leilaoId}/dispositivos-informatica")
-    public Response listarDispositivosInformaticaAssociadosLeilaoByNome(
-            @PathParam("leilaoId") Long leilaoId,
-            @QueryParam("buscaNome") String buscaNome) {
-
-        if (leilaoId == null) {
-            throw new WebApplicationException("Leilão Nulo", Response.Status.NOT_FOUND);
-        }
-
-        List<DispositivoInformaticaDTO> dispositivoInformaticaDTOs =
-                dispositivoInformaticaService.listarDispositivosInformaticaAssociadosLeilaoByNome(leilaoId, buscaNome);
-
-        if (dispositivoInformaticaDTOs.isEmpty()) {
-            throw new WebApplicationException("Dispositivos de Informática não encontrados para o Leilão informado",
-                    Response.Status.NOT_FOUND);
-        }
-
-        return Response.status(Response.Status.OK).entity(dispositivoInformaticaDTOs).build();
+    @Path("/{leilaoId}/dispositivos")
+    public Response listarDispositivosAssociadosLeilaoByNome(@PathParam("leilaoId") Long leilaoId, @QueryParam("buscaNome") String buscaNome) {
+    	Response dispositivo =  dispositivoInformaticaService.listarDispositivosAssociadosLeilaoByNome(leilaoId, buscaNome);
+    	return dispositivo;
     }
 }
