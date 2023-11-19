@@ -102,4 +102,5 @@ public class LeilaoResource {
 		return leilaoService.filtrarProdutosPorFaixaDeValoresAdicionais(leilaoId, valorMin, valorMax);
 	}
 
+
 }

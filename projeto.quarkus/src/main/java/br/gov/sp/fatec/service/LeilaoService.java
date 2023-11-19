@@ -200,3 +200,7 @@ public class LeilaoService implements PanacheRepositoryBase<Leilao, Long> {
 	}
 
 }
+	
+	
+}
+
