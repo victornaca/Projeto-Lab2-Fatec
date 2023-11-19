@@ -14,14 +14,20 @@ import br.gov.sp.fatec.entity.Carro;
 import br.gov.sp.fatec.entity.Leilao;
 import br.gov.sp.fatec.entity.Motocicleta;
 import br.gov.sp.fatec.entity.Veiculo;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 
 @ApplicationScoped
 public class VeiculoService {
+	
+	@PersistenceContext
+    EntityManager entityManager;
 	
 	private ModelMapper modelMapper;
 
@@ -43,59 +49,21 @@ public class VeiculoService {
 		Veiculo.deleteById(id);
 	}
 	
-	@Transactional
-    public VeiculoDTO cadastrarCarro(CarroDTO carroDTO) {
-        Carro carro = modelMapper.map(carroDTO, Carro.class);
-        carro.persist();
-		return carro.toDTO();
-    }
-	
-	@Transactional
-    public VeiculoDTO cadastrarCaminhao(CaminhaoDTO caminhaoDTO) {
-		Caminhao caminhao = modelMapper.map(caminhaoDTO, Caminhao.class);
-	    caminhao.persist();
-	    return caminhao.toDTO();	
-    }
-	
-	@Transactional
-    public VeiculoDTO cadastrarMotocicleta(MotocicletaDTO motocicletaDTO) {
-		Motocicleta motocicleta = modelMapper.map(motocicletaDTO, Motocicleta.class);
-		motocicleta.persist();
-		return motocicleta.toDTO();
+    @Transactional
+    public <T extends PanacheEntityBase> VeiculoDTO cadastrarVeiculo(VeiculoDTO veiculoDTO, Class<T> entityClass) {
+        T veiculo = modelMapper.map(veiculoDTO, entityClass);
+        veiculo.persist();
+        return modelMapper.map(veiculo, VeiculoDTO.class);
     }
 	
     @Transactional
-    public VeiculoDTO atualizarCarro(Long id, CarroDTO carroDTO) {
-    	Carro carro = Carro.findById(id);
-    	if (carro != null) {
-    		modelMapper.map(carroDTO, carro);
-    		carro.persist();
-    		return carro.toDTO();
-    	} else {
-            return null;
-        }
-    }
-    
-    @Transactional
-    public VeiculoDTO atualizarCaminhao(Long id, CaminhaoDTO caminhaoDTO) {
-    	Caminhao caminhao = Caminhao.findById(id);
-    	if (caminhao != null) {
-    		modelMapper.map(caminhaoDTO, caminhao);
-    		caminhao.persist();
-    		return caminhao.toDTO();
-    	} else {
-            return null;
-        }
-    }
-	
-    @Transactional
-    public VeiculoDTO atualizarMotocicleta(Long id, MotocicletaDTO motocicletaDTO) {   	
-        Motocicleta motocicleta = Motocicleta.findById(id);
-        if (motocicleta != null) {
-    		modelMapper.map(motocicletaDTO, motocicleta);
-    		motocicleta.persist();
-    		return motocicleta.toDTO();
-    	} else {
+    public <T extends PanacheEntityBase> VeiculoDTO atualizarVeiculo(Long id, VeiculoDTO veiculoDTO, Class<T> entityClass) {
+        T veiculo = entityManager.find(entityClass, id);
+        if (veiculo != null) {
+            modelMapper.map(veiculoDTO, veiculo);
+            veiculo.persist();
+            return modelMapper.map(veiculo, VeiculoDTO.class);
+        } else {
             return null;
         }
     }
@@ -142,19 +110,29 @@ public class VeiculoService {
 	    return Response.status(Response.Status.OK).entity(veiculoDTOs).build();
 	}
 	
-    @Transactional
-    public List<VeiculoDTO> listarVeiculosAssociadosLeilaoByNome(Long leilaoId, String buscaNome) {
-        List<Veiculo> veiculos;
-
-        if (buscaNome != null && !buscaNome.trim().isEmpty()) {
-            veiculos = Veiculo.list("leilao.id = ?1 and (marca like ?2 or modelo like ?2)",
-                    Sort.by("id"), leilaoId, "%" + buscaNome + "%");
-        } else {
-            veiculos = Veiculo.list("leilao.id", Sort.by("id"), leilaoId);
+	@Transactional
+	public Response listarVeiculosAssociadosLeilaoByNome(Long leilaoId, String buscaNome) {
+		if (leilaoId == null) {
+	    	throw new WebApplicationException ("Leilão Nulo", Response.Status.NOT_FOUND);
         }
+		
+		List<Veiculo> veiculos;
 
-        return veiculos.stream()
-                .map(veiculo -> modelMapper.map(veiculo, VeiculoDTO.class))
-                .collect(Collectors.toList());
-    }
+	    if (buscaNome != null && !buscaNome.trim().isEmpty()) {
+	    	veiculos = Veiculo.list("leilao.id = ?1 and marca like ?2",
+	    	        Sort.by("id"), leilaoId, "%" + buscaNome + "%");
+	    } else {
+	        veiculos = Veiculo.list("leilao.id", Sort.by("id"), leilaoId);
+	    }
+	    if (veiculos.isEmpty()) {
+	    	throw new WebApplicationException ("Veículos não encontrados para o Leilão informado", Response.Status.NOT_FOUND);
+	    }
+
+	    List<VeiculoDTO> veiculoDTOs = 
+	    		veiculos.stream()
+	            .map(Veiculo::toDTO) //
+	            .collect(Collectors.toList());
+
+	    return Response.status(Response.Status.OK).entity(veiculoDTOs).build();
+	}
 }

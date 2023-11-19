@@ -6,8 +6,12 @@ import br.gov.sp.fatec.dto.CaminhaoDTO;
 import br.gov.sp.fatec.dto.CarroDTO;
 import br.gov.sp.fatec.dto.MotocicletaDTO;
 import br.gov.sp.fatec.dto.VeiculoDTO;
+import br.gov.sp.fatec.entity.Caminhao;
+import br.gov.sp.fatec.entity.Carro;
+import br.gov.sp.fatec.entity.Motocicleta;
 import br.gov.sp.fatec.entity.Veiculo;
 import br.gov.sp.fatec.service.VeiculoService;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -59,31 +63,25 @@ public class VeiculoResource {
     @POST
     @Path("/cadastrar-carro")
     public Response cadastrarCarro(CarroDTO carroDTO) {
-    	VeiculoDTO carroCriadoDTO = veiculoService.cadastrarCarro(carroDTO);
-        if (carroCriadoDTO != null) {
-            return Response.status(Response.Status.CREATED).entity(carroCriadoDTO).build();
-        } else {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
+        return cadastrarVeiculo(carroDTO, Carro.class);
     }
-    
+
     @POST
     @Path("/cadastrar-caminhao")
     public Response cadastrarCaminhao(CaminhaoDTO caminhaoDTO) {
-    	VeiculoDTO caminhaoCriadoDTO = veiculoService.cadastrarCaminhao(caminhaoDTO);
-        if (caminhaoCriadoDTO != null) {
-            return Response.status(Response.Status.CREATED).entity(caminhaoCriadoDTO).build();
-        } else {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
+        return cadastrarVeiculo(caminhaoDTO, Caminhao.class);
     }
 
     @POST
     @Path("/cadastrar-moto")
     public Response cadastrarMotocicleta(MotocicletaDTO motocicletaDTO) {
-    	VeiculoDTO motocicletaCriadoDTO = veiculoService.cadastrarMotocicleta(motocicletaDTO);
-        if (motocicletaCriadoDTO != null) {
-            return Response.status(Response.Status.CREATED).entity(motocicletaCriadoDTO).build();
+        return cadastrarVeiculo(motocicletaDTO, Motocicleta.class);
+    }
+
+    private Response cadastrarVeiculo(VeiculoDTO veiculoDTO, Class<? extends PanacheEntityBase> entityClass) {
+        VeiculoDTO veiculoCriadoDTO = veiculoService.cadastrarVeiculo(veiculoDTO, entityClass);
+        if (veiculoCriadoDTO != null) {
+            return Response.status(Response.Status.CREATED).entity(veiculoCriadoDTO).build();
         } else {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
@@ -92,31 +90,25 @@ public class VeiculoResource {
     @PUT
     @Path("/atualizar-carro/{id}")
     public Response atualizarCarro(@PathParam("id") Long id, CarroDTO carroDTO) {
-    	VeiculoDTO carro = veiculoService.atualizarCarro(id,carroDTO);
-    	if (carro != null) {
-            return Response.ok(carro).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
+        return atualizarVeiculo(id, carroDTO, Carro.class);
     }
-    
+
     @PUT
     @Path("/atualizar-caminhao/{id}")
     public Response atualizarCaminhao(@PathParam("id") Long id, CaminhaoDTO caminhaoDTO) {
-    	VeiculoDTO caminhao = veiculoService.atualizarCaminhao(id,caminhaoDTO);
-    	if (caminhao != null) {
-            return Response.ok(caminhao).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
+        return atualizarVeiculo(id, caminhaoDTO, Caminhao.class);
     }
-    
+
     @PUT
     @Path("/atualizar-moto/{id}")
     public Response atualizarMotocicleta(@PathParam("id") Long id, MotocicletaDTO motocicletaDTO) {
-    	VeiculoDTO motocicleta = veiculoService.atualizarMotocicleta(id,motocicletaDTO);
-    	if (motocicleta != null) {
-            return Response.ok(motocicleta).build();
+        return atualizarVeiculo(id, motocicletaDTO, Motocicleta.class);
+    }
+
+    private Response atualizarVeiculo(Long id, VeiculoDTO veiculoDTO, Class<? extends PanacheEntityBase> entityClass) {
+        VeiculoDTO veiculoAtualizadoDTO = veiculoService.atualizarVeiculo(id, veiculoDTO, entityClass);
+        if (veiculoAtualizadoDTO != null) {
+            return Response.ok(veiculoAtualizadoDTO).build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -138,18 +130,8 @@ public class VeiculoResource {
     
     @GET
     @Path("/{leilaoId}/veiculos")
-    public Response listarVeiculoAssociadoLeilao(@PathParam("leilaoId") Long leilaoId, @QueryParam("buscaNome") String buscaNome) {
-
-        if (leilaoId == null) {
-            throw new WebApplicationException("Leilão Nulo", Response.Status.NOT_FOUND);
-        }
-
-        List<VeiculoDTO> veiculoDTOs = veiculoService.listarVeiculosAssociadosLeilaoByNome(leilaoId, buscaNome);
-
-        if (veiculoDTOs.isEmpty()) {
-            throw new WebApplicationException("Veículos não encontrados para o Leilão informado", Response.Status.NOT_FOUND);
-        }
-
-        return Response.status(Response.Status.OK).entity(veiculoDTOs).build();
+    public Response listarVeiculoAssociadoLeilaoByNome(@PathParam("leilaoId") Long leilaoId, @QueryParam("buscaNome") String buscaNome) {
+    	Response veiculo = veiculoService.listarVeiculosAssociadosLeilaoByNome(leilaoId,buscaNome);
+    	return veiculo;
     }
 }
