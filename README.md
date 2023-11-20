@@ -11,6 +11,17 @@ mvn clean
 ```
 ## View Endpoints with Swagger:
 * [Swagger UI](http://localhost:8080/q/swagger-ui/#/)
+
+## Como exportar .DOT
+- Open Swagger;
+- Find the Export Resource package;
+- Click on any endpoint;
+- Press the "Try it out" button
+- Within responses click on "Download File"
+- Or put the url in your browser example:
+```shell script
+http://localhost:8080/exportar/clientes
+```
 ## Source Code Location
 
 The source code for the project is available at [GitHub](https://github.com/victornaca/Projeto-Lab2-Fatec/tree/main/projeto.quarkus/src/main).
