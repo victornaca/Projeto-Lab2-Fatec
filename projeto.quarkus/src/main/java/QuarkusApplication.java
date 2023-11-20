@@ -1,21 +1,18 @@
-import br.gov.sp.fatec.service.LeilaoService;
+import br.gov.sp.fatec.entity.Leilao;
 import io.quarkus.runtime.Quarkus;
 import io.quarkus.runtime.annotations.QuarkusMain;
-import jakarta.inject.Inject;
 
 @QuarkusMain
 public class QuarkusApplication {
 	
-	@Inject
-	LeilaoService leilaoService;
 
 	public static void main(String[] args) {
 		Quarkus.run(args);
 	}
 
 	public int run(String... args) {
-		leilaoService.atualizarStatusLeiloes();
-
+		Leilao leilao = new Leilao();
+		leilao.definirStatusComBaseNoHorario();
 		return 0;
 	}
 }

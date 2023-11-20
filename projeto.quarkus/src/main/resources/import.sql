@@ -45,6 +45,10 @@ VALUES ('Carro B', 'Modelo B', 2019, 'Excelente', 'VINCULADO', 'CARRO', 4, 5, 'G
 INSERT INTO veiculo (marca, modelo, ano, estadoConservacao, status, tipoVeiculo, tipoMotocicleta, cilindrada, partidaEletrica, freioAbs)
 VALUES ('Motocicleta C', 'Modelo C', 2021, 'Bom', 'NAO VINCULADO', 'MOTOCICLETA', 'Esportiva', 600, true, true);
 
+-- Inserir um Carro associado a um Leilão (Assumindo que o Carro tem ID 2 e o Leilão tem ID 3)
+INSERT INTO veiculo (marca, modelo, ano, estadoConservacao, status, tipoVeiculo, numeroPortas, capacidadePassageiros, combustivel, tipoTransmissao, arCondicionado, travaEletrica, leilaoId)
+VALUES ('Carro D', 'Modelo D', 2019, 'Excelente', 'VINCULADO', 'CARRO', 4, 5, 'Gasolina', 'Automática', true, true, 3);
+
 
 -- Inserir um Tablet vinculado a um Leilão (Assumindo que o Tablet tem ID 1 e o Leilão tem ID 1)
 INSERT INTO dispositivoinformatica (tipo, modelo, estadoConservacao, status, tipoDispositivoInformatica, fabricante, tamanhoTela, características, memoria, memoriaRAM, leilaoId)
@@ -63,8 +67,8 @@ INSERT INTO dispositivoinformatica (tipo, modelo, estadoConservacao, status, tip
 VALUES ('Celular', 'Celular D', 'Bom', 'NAO VINCULADO', 'CELULAR', 'Fabricante D', 'Android', 6.0, '128 GB', '16 MP');
 
 -- Inserir outro Tablet sem vinculação a um Leilão
-INSERT INTO dispositivoinformatica (tipo, modelo, estadoConservacao, status, tipoDispositivoInformatica, fabricante, tamanhoTela, características, memoria, memoriaRAM)
-VALUES ('Tablet', 'Tablet E', 'Bom', 'VINCULADO', 'TABLET', 'Fabricante E', 8.0, 'Características E', '64 GB', '6 GB');
+INSERT INTO dispositivoinformatica (tipo, modelo, estadoConservacao, status, tipoDispositivoInformatica, fabricante, tamanhoTela, características, memoria, memoriaRAM, leilaoId)
+VALUES ('Tablet', 'Tablet E', 'Bom', 'VINCULADO', 'TABLET', 'Fabricante E', 8.0, 'Características E', '64 GB', '6 GB', 3);
 
 
 
@@ -80,7 +84,7 @@ INSERT INTO cliente (nome, email) VALUES ('Cliente C', 'clienteC@email.com');
 
 
 -- Inserir o primeiro lance ligando a um Veículo (Assumindo que o Veículo tem ID 1 e o Cliente tem ID 1)
-INSERT INTO lance (dataHora, valorInicial, ValorAdicional, Veidculoid, Clienteid) 
+INSERT INTO lance (dataHora, valorInicial, ValorAdicional, Veiculoid, Clienteid) 
 VALUES ('2023-10-10 08:00:00', 1000.00, 200.00, 1, 1);
 
 -- Inserir o segundo lance ligando a um Dispositivo de Informática (Assumindo que o Dispositivo tem ID 2 e o Cliente tem ID 2)
@@ -88,5 +92,21 @@ INSERT INTO lance (dataHora, valorInicial, ValorAdicional, Dispositivoid, Client
 VALUES ('2023-10-11 09:30:00', 800.00, 200.00, 2, 2);
 
 -- Inserir o terceiro lance ligando a um Veículo (Assumindo que o Veículo tem ID 3 e o Cliente tem ID 3)
-INSERT INTO lance (dataHora, valorInicial, ValorAdicional, Veidculoid, Clienteid) 
+INSERT INTO lance (dataHora, valorInicial, ValorAdicional, Veiculoid, Clienteid) 
 VALUES ('2023-10-12 10:45:00', 1200.00, 200.00, 3, 3);
+
+-- Inserir o terceiro lance ligando a um Veículo (Assumindo que o Veículo tem ID 3 e o Cliente tem ID 3)
+INSERT INTO lance (dataHora, valorInicial, ValorAdicional, Veiculoid, Clienteid) 
+VALUES ('2023-10-12 10:45:00', 1200.00, 200.00, 4, 3);
+
+-- Inserir o segundo lance ligando a um Dispositivo de Informática (Assumindo que o Dispositivo tem ID 2 e o Cliente tem ID 2)
+INSERT INTO lance (dataHora, valorInicial, ValorAdicional, Dispositivoid, Clienteid) 
+VALUES ('2023-10-11 09:30:00', 800.00, 200.00, 3, 1);
+
+-- Inserir o segundo lance ligando a um Dispositivo de Informática (Assumindo que o Dispositivo tem ID 2 e o Cliente tem ID 2)
+INSERT INTO lance (dataHora, valorInicial, ValorAdicional, Dispositivoid, Clienteid) 
+VALUES ('2023-10-11 09:30:00', 800.00, 200.00, 4, 3);
+
+-- Inserir o segundo lance ligando a um Dispositivo de Informática (Assumindo que o Dispositivo tem ID 2 e o Cliente tem ID 2)
+INSERT INTO lance (dataHora, valorInicial, ValorAdicional, Dispositivoid, Clienteid) 
+VALUES ('2023-10-11 09:30:00', 800.00, 200.00, 5, 3);
