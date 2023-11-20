@@ -91,6 +91,7 @@ public class VeiculoService {
         return veiculo.toDTO();
 	}
 	
+	@Transactional
 	public Response listarVeiculoAssociadoLeilao (Long leilaoId) {
 	    if (leilaoId == null) {
 	    	throw new WebApplicationException ("Leilão Nulo", Response.Status.NOT_FOUND);
@@ -101,6 +102,19 @@ public class VeiculoService {
 	    if (veiculos.isEmpty()) {
 	    	throw new WebApplicationException ("Veículos não encontrados para o Leilão informado", Response.Status.NOT_FOUND);
 	    }
+
+	    List<VeiculoDTO> veiculoDTOs = 
+	    		veiculos.stream()
+	            .map(Veiculo::toDTO) //
+	            .collect(Collectors.toList());
+
+	    return Response.status(Response.Status.OK).entity(veiculoDTOs).build();
+	}
+	
+	@Transactional
+	public Response listarVeiculoLeilao (Long leilaoId) {
+
+	    List<Veiculo> veiculos = Veiculo.list("leilao.id", leilaoId);
 
 	    List<VeiculoDTO> veiculoDTOs = 
 	    		veiculos.stream()

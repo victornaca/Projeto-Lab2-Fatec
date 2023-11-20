@@ -1,8 +1,9 @@
 package br.gov.sp.fatec.service;
 
-import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 
@@ -11,11 +12,14 @@ import br.gov.sp.fatec.entity.Cliente;
 import br.gov.sp.fatec.entity.DispositivoInformatica;
 import br.gov.sp.fatec.entity.Lance;
 import br.gov.sp.fatec.entity.Veiculo;
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.Response;
 
 @ApplicationScoped
 public class LanceService {
@@ -82,4 +86,32 @@ public class LanceService {
 
 		return entityManager.createQuery(jpql, Lance.class).setParameter("produto", produto).getResultList();
 	}
+	
+	@Transactional
+	public Response listarLancesPorProduto(Long produto) {
+
+	    List<Lance> lances = new ArrayList<>();
+
+	    if (produto != null) {
+	        lances = Lance.list("dispositivo.id = ?1 or veiculo.id = ?1", Sort.by("id"), produto, "%");
+	    }
+
+	    List<LanceDTO> lancesDTOs =
+	            lances.stream()
+	                    .map(lance -> {
+	                        LanceDTO lanceDTO = new LanceDTO();
+	                        lanceDTO.setVeiculoId(lance.getVeiculo().getId());
+	                        lanceDTO.setDispositivoId(lance.getDispositivo().getId());
+	                        lanceDTO.setClienteId(lance.getCliente().getId());
+	                        lanceDTO.setDataHora(lance.getDataHora());
+	                        lanceDTO.setValorInicial(lance.getValorInicial());
+	                        lanceDTO.setValorAdicional(lance.getValorAdicional());
+	                        return lanceDTO;
+	                    })
+	                    .collect(Collectors.toList());
+
+	    return Response.status(Response.Status.OK).entity(lancesDTOs).build();
+	}
+	
+	
 }

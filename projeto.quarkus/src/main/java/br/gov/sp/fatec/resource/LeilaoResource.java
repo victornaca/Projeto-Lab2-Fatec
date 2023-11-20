@@ -93,16 +93,6 @@ public class LeilaoResource {
 	}
 
 	@GET
-	@Path("/detalharLeilao/{id}")
-	public Response detalharLeilao(@PathParam("id") Long id) {
-		LeilaoDTO leilaoDTO = leilaoService.detalharLeilao(id);
-		if (leilaoDTO == null) {
-			return Response.status(Response.Status.NOT_FOUND).build();
-		}
-		return Response.ok(leilaoDTO).build();
-	}
-
-	@GET
 	@Path("/{leilaoId}/filtrarPorFaixaDeValores")
 	public List<Object> filtrarProdutosPorFaixaDeValores(@PathParam("leilaoId") Long leilaoId,
 			@QueryParam("valorMin") Double valorMin, @QueryParam("valorMax") Double valorMax) {

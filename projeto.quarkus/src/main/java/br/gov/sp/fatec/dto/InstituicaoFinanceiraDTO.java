@@ -11,8 +11,8 @@ public class InstituicaoFinanceiraDTO {
 	private String cnpj;
 	
 	
-	 public static InstituicaoFinanceiraDTO fromEntity(InstituicaoFinanceira instituicao) {
-	        InstituicaoFinanceiraDTO dto = new InstituicaoFinanceiraDTO();
+	public static InstituicaoFinanceiraDTO fromEntity(InstituicaoFinanceira instituicao) {
+			InstituicaoFinanceiraDTO dto = new InstituicaoFinanceiraDTO();
 	        dto.setId(instituicao.getId());
 	        dto.setNome(instituicao.getNome());
 	        dto.setCnpj(instituicao.getCnpj());

@@ -25,9 +25,6 @@ public class LeilaoDTO {
 	private String cidade;
     @Size(max = 2)
 	private String estado;
-	private List<Long> leilaoInstituicaoid;
-	private List<InstituicaoFinanceiraDTO> leilaoInstituicao;
-	private List<DispositivoInformaticaDTO> dispositivos;
-	private List<VeiculoDTO> veiculos;
+	private List<Long> leilaoInstituicaoIds;
 
 }

@@ -85,6 +85,7 @@ public class DispositivoInformaticaService {
 		return dispositivo.toDTO();
 	}
 	
+	@Transactional
 	public Response listarDispositivoAssociadoLeilao (Long leilaoId) {
         if (leilaoId == null) {
 	    	throw new WebApplicationException ("Leilão Nulo", Response.Status.NOT_FOUND);
@@ -95,6 +96,19 @@ public class DispositivoInformaticaService {
         if (dispositivos.isEmpty()) {
 	    	throw new WebApplicationException ("Dispositivos não encontrados para o Leilão informado", Response.Status.NOT_FOUND);
         }
+        
+        List<DispositivoInformaticaDTO> dispositivoDTOs = 
+	    		dispositivos.stream()
+	            .map(DispositivoInformatica::toDTO) //
+	            .collect(Collectors.toList());
+        
+		return Response.status(Response.Status.OK).entity(dispositivoDTOs).build();
+	}
+	
+	@Transactional
+	public Response listarDispositivoLeilao (Long leilaoId) {
+        
+        List<DispositivoInformatica> dispositivos = DispositivoInformatica.list("leilao.id", leilaoId);
         
         List<DispositivoInformaticaDTO> dispositivoDTOs = 
 	    		dispositivos.stream()

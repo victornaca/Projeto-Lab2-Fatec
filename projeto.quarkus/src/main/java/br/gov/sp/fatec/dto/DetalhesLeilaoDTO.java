@@ -16,7 +16,8 @@ public class DetalhesLeilaoDTO {
     private String endereco;
     private String cidade;
     private String estado;
+	private List<InstituicaoFinanceiraDTO> leilaoInstituicao;
     private List<VeiculoDTO> veiculos;
     private List<DispositivoInformaticaDTO> dispositivosInformatica;
-    private List<Lance> lances;
+    private List<LanceDTO> lances;
 }
