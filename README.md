@@ -12,7 +12,7 @@ mvn clean
 ## View Endpoints with Swagger:
 * [Swagger UI](http://localhost:8080/q/swagger-ui/#/)
 
-## Como exportar .DOT
+## How to Export .DOT?
 - Open Swagger;
 - Find the Export Resource package;
 - Click on any endpoint;
