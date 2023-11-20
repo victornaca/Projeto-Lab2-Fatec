@@ -16,8 +16,8 @@ mvn clean
 - Open Swagger;
 - Find the Export Resource package;
 - Click on any endpoint;
-- Press the "Try it out" button
-- Within responses click on "Download File"
+- Press the "Try it out" button;
+- Within responses click on "Download File";
 - Or put the url in your browser example:
 ```shell script
 http://localhost:8080/exportar/clientes
